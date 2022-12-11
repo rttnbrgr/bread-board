@@ -4,9 +4,20 @@ import {
   useSupabaseClient,
   Session
 } from "@supabase/auth-helpers-react";
+import {
+  Button,
+  Input,
+  Stack,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Text,
+  Box
+} from "@chakra-ui/react";
 import Avatar from "./Avatar";
-
 import { Database } from "../utils/database.types";
+
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 
 export default function Account({ session }: { session: Session }) {
@@ -22,6 +33,7 @@ export default function Account({ session }: { session: Session }) {
   }, [session]);
 
   async function getProfile() {
+    console.log("get Profile?");
     try {
       setLoading(true);
       if (!user) throw new Error("No user");
@@ -37,6 +49,7 @@ export default function Account({ session }: { session: Session }) {
       }
 
       if (data) {
+        console.log("if data!", data);
         setUsername(data.username);
         setWebsite(data.website);
         setAvatarUrl(data.avatar_url);
@@ -92,47 +105,47 @@ export default function Account({ session }: { session: Session }) {
           updateProfile({ username, website, avatar_url: url });
         }}
       />
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={session.user.email} disabled />
-      </div>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          value={username || ""}
-          onChange={e => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          type="website"
-          value={website || ""}
-          onChange={e => setWebsite(e.target.value)}
-        />
-      </div>
 
-      <div>
-        <button
-          className="button primary block"
+      <Box bg="gray.200">
+        <Text fontSize="2xl" lineHeight="2" display="block">
+          Account
+        </Text>
+      </Box>
+
+      <Stack spacing="4" my="16">
+        <FormControl>
+          <FormLabel>Email</FormLabel>
+          <Input type="email" value={session.user.email} disabled />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Username</FormLabel>
+          <Input
+            type="text"
+            value={username || ""}
+            onChange={e => setUsername(e.target.value)}
+          />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Website</FormLabel>
+          <Input
+            type="text"
+            value={website || ""}
+            onChange={e => setWebsite(e.target.value)}
+          />
+        </FormControl>
+
+        <Button
           onClick={() => updateProfile({ username, website, avatar_url })}
           disabled={loading}
+          colorScheme="green"
+          // display="flex"
+          w="100%"
         >
           {loading ? "Loading ..." : "Update"}
-        </button>
-      </div>
-
-      <div>
-        <button
-          className="button block"
-          onClick={() => supabase.auth.signOut()}
-        >
-          Sign Out
-        </button>
-      </div>
+        </Button>
+      </Stack>
     </div>
   );
 }

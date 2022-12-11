@@ -26,3 +26,13 @@ function MyApp({
   );
 }
 export default MyApp;
+
+// TODO:
+/*
+strip old css
+add to root container
+build global headbar
+make list of design ideas
+pull out account/session logic to get avatar in headbar
+chakra modal is fucking with focus
+*/
