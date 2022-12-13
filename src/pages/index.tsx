@@ -1,6 +1,7 @@
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Account from "../components/Account";
 import Marketing from "../components/ViewMarketing";
+import HeaderBar from "../components/HeaderBar";
 import {
   Box,
   BoxProps,
@@ -64,63 +65,21 @@ const LoginSlice = ({
   );
 };
 
-const rootStyles = {
-  bg: "tomato",
-  px: 4,
-  py: 2,
-  display: "flex",
-  justifyContent: "space-between"
-};
-
-const Root = ({ children, ...props }: BoxProps) => (
-  <Box {...rootStyles} {...props}>
-    {children}
-  </Box>
-);
-
-const HeaderBarStyles = {
-  // bg: "tomato",
-  px: 4,
-  py: 2,
-  display: "flex",
-  justifyContent: "space-between"
-};
-
-const HeaderBar = ({ onToggle, isOpen }) => {
-  const supabase = useSupabaseClient();
-  const session = useSession();
-  const onHeadbarAction = session
-    ? () => supabase.auth.signOut()
-    : () => {
-        onToggle();
-      };
-  const headbarActionText = session ? "Logout" : "Login";
-
-  return (
-    <Box bg="#11998e" bgGradient="linear(to-r, #38ef7d, #11998e)">
-      <Container maxW="container.xl" {...HeaderBarStyles}>
-        <Box
-          p="1"
-          px="2"
-          bg="white"
-          color="black"
-          fontWeight="bold"
-          lineHeight="2"
-        >
-          PATH
-        </Box>
-        <Button colorScheme="white" variant="link" onClick={onHeadbarAction}>
-          {isOpen && !session && "Close "}
-          {headbarActionText}
-        </Button>
-      </Container>
-    </Box>
-  );
-};
-
 const Home = () => {
   const session = useSession();
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const {
+    isOpen: accountIsOpen,
+    onOpen: accountOnOpen,
+    onClose: accountOnClose,
+    onToggle: accountOnToggle
+  } = useDisclosure();
+  const accountDisclosure = {
+    accountIsOpen,
+    accountOnOpen,
+    accountOnClose,
+    accountOnToggle
+  };
   const supabase = useSupabaseClient();
 
   const onHeadbarAction = session
@@ -132,7 +91,7 @@ const Home = () => {
 
   return (
     <>
-      <HeaderBar onToggle={onToggle} isOpen={isOpen} />
+      <HeaderBar onToggle={onToggle} isOpen={isOpen} {...accountDisclosure} />
       {!session ? (
         // Not Logged In
         <Container maxW="container.sm">
@@ -153,13 +112,13 @@ const Home = () => {
                 Other
               </Box>
               <Box bg="" flex="1 1 200px">
+                {accountIsOpen ? "account is open" : "account is closed"}
                 <Account session={session} />
               </Box>
             </Flex>
           </Container>
         </Box>
       )}
-
       {/* <LoginModal isOpen={isOpen} onClose={onClose} /> */}
     </>
   );
