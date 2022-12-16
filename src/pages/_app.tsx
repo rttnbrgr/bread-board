@@ -29,10 +29,14 @@ export default MyApp;
 
 // TODO:
 /*
-strip old css
+strip old css / convert to Chakra
 add to root container
 build global headbar
 make list of design ideas
 pull out account/session logic to get avatar in headbar
 chakra modal is fucking with focus
+lookup todo vs code plugins
+update account to smaller column
+make this work for dev offline
+look up simple react state libs (zustand?)
 */
