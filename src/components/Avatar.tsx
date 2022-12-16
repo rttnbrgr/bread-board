@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../utils/database.types";
+import { Box, FormControl, FormLabel, Image, Input } from "@chakra-ui/react";
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 
-export default function Avatar({
-  uid,
-  url,
-  size,
-  onUpload
-}: {
+type AvatarProps = {
   uid: string;
   url: Profiles["avatar_url"];
   size: number;
   onUpload: (url: string) => void;
-}) {
+};
+
+export default function Avatar({ uid, url, size, onUpload }: AvatarProps) {
   const supabase = useSupabaseClient<Database>();
   const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>(null);
   const [uploading, setUploading] = useState(false);
@@ -70,36 +68,43 @@ export default function Avatar({
   };
 
   return (
-    <div>
+    <Box>
       {avatarUrl ? (
-        <img
+        <Image
           src={avatarUrl}
           alt="Avatar"
-          className="avatar image"
-          style={{ height: size, width: size }}
+          borderRadius="base"
+          boxSize={size}
+          maxWidth="100%"
+          sx={{
+            overflow: "hidden",
+            objectFit: "cover"
+          }}
         />
       ) : (
-        <div
-          className="avatar no-image"
-          style={{ height: size, width: size }}
+        <Box
+          boxSize={size}
+          background="gray.700"
+          borderRadius="base"
+          border="1px"
+          borderColor="gray.300"
         />
       )}
-      <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? "Uploading ..." : "Upload"}
-        </label>
-        <input
-          style={{
-            visibility: "hidden",
-            position: "absolute"
-          }}
-          type="file"
-          id="single"
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
-      </div>
-    </div>
+      <Box width={size}>
+        <FormControl>
+          <FormLabel>{uploading ? "Uploading ..." : "Upload"}</FormLabel>
+          <Input
+            style={{
+              visibility: "hidden",
+              position: "absolute"
+            }}
+            type="file"
+            accept="image/*"
+            onChange={uploadAvatar}
+            disabled={uploading}
+          />
+        </FormControl>
+      </Box>
+    </Box>
   );
 }

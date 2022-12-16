@@ -95,24 +95,21 @@ export default function Account({ session }: { session: Session }) {
   }
 
   return (
-    <div className="form-widget">
-      <Avatar
-        uid={user!.id}
-        url={avatar_url}
-        size={150}
-        onUpload={url => {
-          setAvatarUrl(url);
-          updateProfile({ username, website, avatar_url: url });
-        }}
-      />
-
-      <Box bg="gray.200">
-        <Text fontSize="2xl" lineHeight="2" display="block">
-          Account
-        </Text>
-      </Box>
+    <Box bg="gray.50" px="4" py="8">
+      <Text fontSize="2xl" lineHeight="2" display="block">
+        Account
+      </Text>
 
       <Stack spacing="4" my="16">
+        <Avatar
+          uid={user!.id}
+          url={avatar_url}
+          size={150}
+          onUpload={url => {
+            setAvatarUrl(url);
+            updateProfile({ username, website, avatar_url: url });
+          }}
+        />
         <FormControl>
           <FormLabel>Email</FormLabel>
           <Input type="email" value={session.user.email} disabled />
@@ -135,17 +132,16 @@ export default function Account({ session }: { session: Session }) {
             onChange={e => setWebsite(e.target.value)}
           />
         </FormControl>
-
-        <Button
-          onClick={() => updateProfile({ username, website, avatar_url })}
-          disabled={loading}
-          colorScheme="green"
-          // display="flex"
-          w="100%"
-        >
-          {loading ? "Loading ..." : "Update"}
-        </Button>
       </Stack>
-    </div>
+      <Button
+        onClick={() => updateProfile({ username, website, avatar_url })}
+        disabled={loading}
+        colorScheme="green"
+        // display="flex"
+        w="100%"
+      >
+        {loading ? "Loading ..." : "Update"}
+      </Button>
+    </Box>
   );
 }
