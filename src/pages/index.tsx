@@ -2,6 +2,7 @@ import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Account from "../components/Account";
 import Marketing from "../components/ViewMarketing";
 import HeaderBar from "../components/HeaderBar";
+import Login from "../components/Login";
 import {
   Box,
   BoxProps,
@@ -21,49 +22,9 @@ import {
 } from "@chakra-ui/react";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 
-type LoginModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-};
+// const AcccountPane = ({}) => {
 
-const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
-  const supabase = useSupabaseClient();
-  return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Login</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pt="0" pb="8">
-            <Auth
-              supabaseClient={supabase}
-              appearance={{ theme: ThemeSupa }}
-              theme="dark"
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-};
-
-const LoginSlice = ({
-  isOpen,
-  onClose,
-  ...boxProps
-}: LoginModalProps & BoxProps) => {
-  const supabase = useSupabaseClient();
-  return (
-    <Box {...boxProps} height={isOpen ? "400px" : "0"} overflow="hidden">
-      <Auth
-        supabaseClient={supabase}
-        appearance={{ theme: ThemeSupa }}
-        theme="dark"
-      />
-    </Box>
-  );
-};
+// }
 
 const Home = () => {
   const session = useSession();
@@ -97,7 +58,7 @@ const Home = () => {
         <Container maxW="container.sm">
           <>
             {isOpen ? (
-              <LoginSlice isOpen={isOpen} onClose={onClose} />
+              <Login isOpen={isOpen} onClose={onClose} />
             ) : (
               <Marketing isOpen={isOpen} onOpen={onOpen} />
             )}
