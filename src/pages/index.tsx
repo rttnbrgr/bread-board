@@ -18,13 +18,13 @@ import {
   ModalCloseButton,
   Stack,
   Container,
-  Flex
+  Flex,
+  Text,
+  TextProps,
+  StackProps
 } from "@chakra-ui/react";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
-
-// const AcccountPane = ({}) => {
-
-// }
+import PrimaryPane from "../components/ViewBuilder";
 
 const Home = () => {
   const session = useSession();
@@ -34,7 +34,7 @@ const Home = () => {
     onOpen: accountOnOpen,
     onClose: accountOnClose,
     onToggle: accountOnToggle
-  } = useDisclosure({ defaultIsOpen: false });
+  } = useDisclosure({ defaultIsOpen: true });
 
   const accountDisclosure = {
     accountIsOpen,
@@ -71,7 +71,7 @@ const Home = () => {
           <Container maxW="container.xl">
             <Flex>
               <Box bg="orange" flex="3 1 200px">
-                Other
+                <PrimaryPane />
               </Box>
               <Box
                 bg=""
