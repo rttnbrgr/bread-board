@@ -61,14 +61,25 @@ const PrimaryPane = () => {
 
   const handleAddPlace = () => {
     console.log("add place");
+    setData(prevData => {
+      console.log("prevData", prevData);
+      let newData = prevData;
+      newData.push({ title: `New Place X`, items: [] });
+      return newData;
+    });
+    // setData(prevData => {
+    //   return [{ title: "onlye one", items: [] }];
+    // });
   };
 
   return (
     <Box bg="teal" width="fit-content">
+      hey
       <Stack direction="row" spacing="8">
-        {data.map((place, i) => (
-          <PlaceStack {...place} onClick={handleAddAffordance} key={i} />
-        ))}
+        {data &&
+          data.map((place, i) => (
+            <PlaceStack {...place} onClick={handleAddAffordance} key={i} />
+          ))}
         <Button onClick={handleAddPlace}>Add New Place</Button>
       </Stack>
     </Box>
