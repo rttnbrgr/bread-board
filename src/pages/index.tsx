@@ -1,30 +1,7 @@
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import Account from "../components/Account";
-import Marketing from "../components/ViewMarketing";
-import HeaderBar from "../components/HeaderBar";
-import Login from "../components/Login";
-import {
-  Box,
-  BoxProps,
-  Button,
-  useDisclosure,
-  UseDisclosureProps,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Stack,
-  Container,
-  Flex,
-  Text,
-  TextProps,
-  StackProps
-} from "@chakra-ui/react";
-import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
-import PrimaryPane from "../components/ViewBuilder";
+import { Box, useDisclosure, Container, Flex } from "@chakra-ui/react";
+import { Account, HeaderBar, Login } from "../components";
+import { PrimaryPane, Marketing } from "../compositions";
 
 const Home = () => {
   const session = useSession();

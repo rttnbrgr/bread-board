@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { mockPlaceArray } from "../mock";
 
-const PlaceItem = ({ children }: TextProps) => {
+export const PlaceItem = ({ children }: TextProps) => {
   return (
     <Text bg="black" color="white" py="2" px="2">
       {children}
@@ -18,7 +18,7 @@ const PlaceItem = ({ children }: TextProps) => {
   );
 };
 
-const AffordanceItem = ({ children }: TextProps) => {
+export const AffordanceItem = ({ children }: TextProps) => {
   return (
     <Text borderLeft="2px solid black" px="2" py="2">
       {children}
@@ -26,14 +26,14 @@ const AffordanceItem = ({ children }: TextProps) => {
   );
 };
 
-type PlaceProps = {
+export type PlaceProps = {
   title: string;
   items: string[] | null;
 };
 
 type PlaceStackProps = StackProps & PlaceProps;
 
-const PlaceStack = ({ title, items, ...props }: PlaceStackProps) => {
+export const PlaceStack = ({ title, items, ...props }: PlaceStackProps) => {
   return (
     <Stack spacing="0" alignItems={"flex-start"}>
       <PlaceItem>{title}</PlaceItem>

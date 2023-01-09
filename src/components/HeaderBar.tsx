@@ -22,7 +22,7 @@ type Props = {
   accountIsOpen: boolean;
 };
 
-const HeaderBar = ({
+export const HeaderBar = ({
   onToggle,
   isOpen,
   accountIsOpen,
@@ -70,5 +70,3 @@ const HeaderBar = ({
     </Box>
   );
 };
-
-export default HeaderBar;

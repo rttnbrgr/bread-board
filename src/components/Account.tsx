@@ -20,7 +20,7 @@ import { Database } from "../utils/database.types";
 
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 
-export default function Account({ session }: { session: Session }) {
+export function Account({ session }: { session: Session }) {
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,7 @@ export default function Account({ session }: { session: Session }) {
   }, [session]);
 
   async function getProfile() {
-    console.log("get Profile?");
+    // console.log("get Profile?");
     try {
       setLoading(true);
       if (!user) throw new Error("No user");
@@ -49,7 +49,7 @@ export default function Account({ session }: { session: Session }) {
       }
 
       if (data) {
-        console.log("if data!", data);
+        // console.log("if data!", data);
         setUsername(data.username);
         setWebsite(data.website);
         setAvatarUrl(data.avatar_url);

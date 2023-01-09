@@ -55,4 +55,4 @@ export const LoginSlice = ({
   );
 };
 
-export default LoginSlice;
+export const Login = LoginSlice;

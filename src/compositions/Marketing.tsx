@@ -1,23 +1,8 @@
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import {
-  Box,
-  BoxProps,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Stack,
-  UseDisclosureProps,
-  Text
-} from "@chakra-ui/react";
+import { Box, Button, Stack, UseDisclosureProps, Text } from "@chakra-ui/react";
 
-const Marketing = ({ isOpen, onOpen }: UseDisclosureProps) => {
+export const Marketing = ({ isOpen, onOpen }: UseDisclosureProps) => {
   const supabase = useSupabaseClient();
 
   return (
