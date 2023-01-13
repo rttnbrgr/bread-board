@@ -11,7 +11,7 @@ const Home = () => {
     onOpen: accountOnOpen,
     onClose: accountOnClose,
     onToggle: accountOnToggle
-  } = useDisclosure({ defaultIsOpen: true });
+  } = useDisclosure({ defaultIsOpen: false });
 
   const accountDisclosure = {
     accountIsOpen,
@@ -54,13 +54,6 @@ const Home = () => {
                 bg=""
                 flex="1 1 200px"
                 display={accountIsOpen ? "block" : "none"}
-                // TODO: fix animation
-                // sx={{
-                //   flexGrow: 1,
-                //   flexShrink: 1,
-                //   flexBasis: accountIsOpen ? "200px" : 0,
-                //   width: accountIsOpen ? "200px" : 0
-                // }}
               >
                 <Account session={session} />
               </Box>

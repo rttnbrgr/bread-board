@@ -40,4 +40,5 @@ update account to smaller column
 make this work for dev offline
 look up simple react state libs (zustand?)
 fix account annimation
+reorg root to split marketing + app
 */
