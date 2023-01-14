@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Box, Text, TextProps, IconButton } from "@chakra-ui/react";
+import { SmallCloseIcon } from "@chakra-ui/icons";
 
 export type PlaceItemProps = TextProps & {
   onClick?: (e?: any) => void;
@@ -16,7 +17,7 @@ export const PlaceItem = ({ children, onClick }: PlaceItemProps) => {
         variant="ghost"
         colorScheme="gray"
         onClick={onClick}
-        // icon={<SmallCloseIcon />}
+        icon={<SmallCloseIcon />}
       />
     </Box>
   );
