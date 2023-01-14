@@ -1,10 +1,10 @@
 export const mockPlace = {
   title: "View Name",
   items: [
-    "Kldjsaf Affordance",
-    "Affador jakl kldjsaf nce",
-    "Affor adaf adfafafafadfad",
-    "Affordance danceadff"
+    "Sample 1",
+    "Also Another",
+    "Pinochio"
+    // "Affordance danceadff"
   ]
 };
 

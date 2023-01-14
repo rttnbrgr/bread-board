@@ -21,7 +21,7 @@ import {
   AffordanceItem,
   PlaceStack,
   PlaceProps
-} from "../components/Place";
+} from "../components";
 import { setEnvironmentData } from "worker_threads";
 
 export const SupabasePane = () => {
@@ -186,8 +186,6 @@ export const MockPane = () => {
     }
   };
 
-  const addPlace = () => {};
-
   const removePlace = (i: number) => {
     console.log("remove place", i);
     setData(prevData => {
@@ -211,7 +209,7 @@ export const MockPane = () => {
           data.map((place, i) => (
             <PlaceStack
               {...place}
-              handlePlace={() => removePlace(i)}
+              onPlace={() => removePlace(i)}
               onClick={handleAddAffordance}
               key={i}
             />
@@ -222,6 +220,9 @@ export const MockPane = () => {
             <Input
               variant="outline"
               onChange={handleNewPlaceInput}
+              onBlur={() => {
+                // setShowPlaceInput(false);
+              }}
               flexBasis="100px"
               value={newPlace}
             />
