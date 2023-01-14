@@ -7,39 +7,12 @@ import {
   Text,
   TextProps,
   StackProps,
-  IconButton
+  IconButton,
+  Input
 } from "@chakra-ui/react";
-import { mockPlaceArray } from "../mock";
+import { PlaceItem } from "./PlaceItem";
+import { AffordanceItem } from "./AffordanceItem";
 // import { SmallCloseIcon } from "@chakra-ui/icons";
-
-type TextPropsPlusClick = TextProps & {
-  onClick?: (e?: any) => void;
-};
-
-export const PlaceItem = ({ children, onClick }: TextPropsPlusClick) => {
-  return (
-    <Box display="flex" alignItems="center" justifyContent="center">
-      <Text bg="black" color="white" py="2" px="2">
-        {children}
-      </Text>
-      <IconButton
-        aria-label="Remove"
-        onClick={onClick}
-        // icon={<SmallCloseIcon />}
-      />
-      <Box onClick={onClick}>X</Box>
-    </Box>
-  );
-};
-
-export const AffordanceItem = ({ children, onClick }: TextPropsPlusClick) => {
-  return (
-    <Text borderLeft="2px solid black" px="2" py="2">
-      {children}
-      {/* <div onClick={onClick}>X</div> */}
-    </Text>
-  );
-};
 
 export type PlaceProps = {
   title: string;
