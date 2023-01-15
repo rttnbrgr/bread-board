@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Box, Text, TextProps, IconButton } from "@chakra-ui/react";
+import { Box, Text, IconButton } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 
-export type PlaceItemProps = TextProps & {
+export type PlaceItemProps = {
   onClick?: (e?: any) => void;
+  children: string;
 };
 
 export const PlaceItem = ({ children, onClick }: PlaceItemProps) => {
