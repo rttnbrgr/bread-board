@@ -10,7 +10,12 @@ module.exports = {
   core: {
     builder: "@storybook/builder-webpack5"
   },
+  // Fix/Setup for chakra
   features: {
     emotionAlias: false
+  },
+  // Hide Chakra Stories
+  refs: {
+    "@chakra-ui/react": { disable: true }
   }
 };
