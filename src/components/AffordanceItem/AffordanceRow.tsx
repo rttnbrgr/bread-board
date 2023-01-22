@@ -18,7 +18,7 @@ import { AffordanceItem } from "./AffordanceItem";
 
 type ViewState = "new" | "edit" | "read";
 
-export type PlaceProps = {
+type AffordanceOnlyProps = {
   initialView?: ViewState;
   initialValue?: string;
   title?: string;
@@ -29,11 +29,11 @@ export type PlaceProps = {
   onRemove?: (x: string) => void;
 };
 
-type AffordanceProps = StackProps & PlaceProps;
+type AffordanceProps = StackProps & AffordanceOnlyProps;
 
 export const Affordance = ({
   initialView = "read",
-  initialValue,
+  initialValue = "",
   title,
   onAdd = () => {
     console.log("add new");
@@ -72,7 +72,7 @@ export const Affordance = ({
     }
   };
 
-  const resetInput = () => setAffordanceInput("");
+  const resetInput = () => setAffordanceInput(initialValue);
 
   // Hanlders
   const handleConfirm = () => {
@@ -105,19 +105,24 @@ export const Affordance = ({
     if (logicMode === "existing") {
       console.log("logic mode: existing");
       // onConfirm(affordanceInput);
-      // resetInput();
+      resetInput(); // need to get this figured out
       setViewState("read");
     }
   };
 
   const handleEdit = () => {
     setLogicMode("existing");
+    onEdit("foo");
     setViewState("edit");
   };
 
   const handleRemove = () => {
     onRemove(affordanceInput);
   };
+
+  // compute disabled
+  // compute hover
+  const [isShown, setIsShown] = useState(false);
 
   return (
     <Box>
@@ -127,49 +132,53 @@ export const Affordance = ({
         </Button>
       )}
       {viewState === "edit" && (
-        <HStack>
-          {/* Show potential new one */}
-          <AffordanceItem>{affordanceInput}</AffordanceItem>
-          {/* Input */}
-          <Input
-            // variant="outline"
-            onChange={handleUpdateInput}
-            flexBasis="100px"
-            size="sm"
-            variant="flushed"
-            colorScheme="teal"
-            value={affordanceInput}
-          />
-          {/* disabled if empty */}
-          <IconButtonNew
-            aria-label="Confirm"
-            onClick={handleConfirm}
-            icon={<CheckIcon />}
-          />
-          <IconButtonNew
-            aria-label="Cancel"
-            // this could be either new or read
-            onClick={handleCancel}
-            icon={<CloseIcon />}
-          />
-        </HStack>
+        <>
+          <HStack justifyContent="space-between">
+            <Input
+              onChange={handleUpdateInput}
+              size="sm"
+              variant="flushed"
+              colorScheme="teal"
+              value={affordanceInput}
+            />
+            <HStack spacing="0">
+              <IconButtonNew
+                aria-label="Confirm"
+                onClick={handleConfirm}
+                icon={<CheckIcon />}
+                disabled={affordanceInput === ""}
+              />
+              <IconButtonNew
+                aria-label="Cancel"
+                onClick={handleCancel}
+                icon={<CloseIcon />}
+              />
+            </HStack>
+          </HStack>
+        </>
       )}
       {/*  */}
       {viewState === "read" && (
-        <HStack>
+        <HStack
+          justifyContent="space-between"
+          onMouseEnter={() => setIsShown(true)}
+          onMouseLeave={() => setIsShown(false)}
+        >
           {/* Show potential new one */}
           <AffordanceItem>{children}</AffordanceItem>
           {/* Should hide until hover */}
-          <IconButtonNew
-            aria-label="Edit"
-            onClick={handleEdit}
-            icon={<EditIcon />}
-          />
-          <IconButtonNew
-            aria-label="Remove"
-            onClick={handleRemove}
-            icon={<DeleteIcon />}
-          />
+          <HStack spacing="0" opacity={isShown ? "100%" : "10%"}>
+            <IconButtonNew
+              aria-label="Edit"
+              onClick={handleEdit}
+              icon={<EditIcon />}
+            />
+            <IconButtonNew
+              aria-label="Remove"
+              onClick={handleRemove}
+              icon={<DeleteIcon />}
+            />
+          </HStack>
         </HStack>
       )}
     </Box>

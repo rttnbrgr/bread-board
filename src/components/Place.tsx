@@ -42,6 +42,8 @@ export const PlaceStack = ({
 }: PlaceStackProps) => {
   // Affordance Data
   const [data, setData] = useState(items && [...items]);
+  const [activeAffordance, setActiveAffordance] =
+    useState<Number | undefined>(undefined);
 
   const handleAddAffordance = (val: string) => {
     if (val) {
@@ -114,11 +116,14 @@ export const PlaceStack = ({
   return (
     <Stack
       spacing="0"
-      alignItems={"flex-start"}
+      alignItems={"stretch"}
       borderLeft="2px solid yellow"
-      minW="400px"
+      minW="300px"
     >
-      <PlaceItem onClick={handlePlace}>{title}</PlaceItem>
+      <PlaceItem onClick={handlePlace}>
+        {title}
+        {activeAffordance && ` + ${activeAffordance}`}
+      </PlaceItem>
       {/* Affordances */}
       {data &&
         data.map((item, i) => (
@@ -127,6 +132,12 @@ export const PlaceStack = ({
             onRemove={removeAffordance}
             onConfirm={handleUpdateAffordance}
             initialValue={item}
+            initialView={activeAffordance === i ? "edit" : "read"}
+            onEdit={() => {
+              console.log("edit me");
+              // Set active affordance
+              setActiveAffordance(i);
+            }}
           >
             {item}
           </Affordance>

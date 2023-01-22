@@ -7,12 +7,12 @@ import {
   Text,
   TextProps,
   StackProps,
-  Input
+  Input,
 } from "@chakra-ui/react";
 import {
   useUser,
   useSupabaseClient,
-  Session
+  Session,
 } from "@supabase/auth-helpers-react";
 import { mockPlaceArray } from "../mock";
 import { Database } from "../utils/database.types";
@@ -20,7 +20,7 @@ import {
   PlaceItem,
   AffordanceItem,
   PlaceStack,
-  PlaceProps
+  PlaceProps,
 } from "../components";
 import { setEnvironmentData } from "worker_threads";
 
@@ -161,7 +161,7 @@ export const MockPane = () => {
       // setup the new entry
       const newEntry = {
         title: newPlace,
-        items: []
+        items: [],
       };
       // then add it
       setData(prevData => {
@@ -230,7 +230,14 @@ export const MockPane = () => {
             <Button onClick={() => setShowPlaceInput(false)}>Close</Button>
           </>
         ) : (
-          <Button onClick={() => setShowPlaceInput(true)}>Add New Place</Button>
+          <>
+            <Button colorScheme="red" onClick={() => setShowPlaceInput(true)}>
+              Add New Place
+            </Button>
+            <Button onClick={() => setShowPlaceInput(true)}>
+              Add New Place
+            </Button>
+          </>
         )}
       </Stack>
     </Box>
