@@ -8,11 +8,13 @@ import {
   TextProps,
   StackProps,
   IconButton,
-  Input
+  Input,
+  HStack,
 } from "@chakra-ui/react";
+import { IconButton as IconButtonNew } from "./chakra";
 import { PlaceItem } from "./PlaceItem";
-import { AffordanceItem } from "./AffordanceItem";
-// import { SmallCloseIcon } from "@chakra-ui/icons";
+import { Affordance, AffordanceItem } from "./AffordanceItem";
+import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
 
 export type PlaceProps = {
   title: string;
@@ -40,94 +42,109 @@ export const PlaceStack = ({
 }: PlaceStackProps) => {
   // Affordance Data
   const [data, setData] = useState(items && [...items]);
+  const [activeAffordance, setActiveAffordance] =
+    useState<Number | undefined>(undefined);
 
-  // Input
-  const [showAffordanceInput, setShowAffordanceInput] =
-    useState<Boolean>(false);
-  const [newAffordance, setNewAffordance] = useState("");
-
-  const handleNewAffordanceInput = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    setNewAffordance(event.target.value); // why?!?!
-  };
-
-  const handleAddAffordance = () => {
-    console.log("add affordance");
-    if (!!newAffordance) {
-      // then add it
+  const handleAddAffordance = (val: string) => {
+    if (val) {
       setData(prevData => {
-        console.log("prevData", prevData);
-        if (prevData) {
-          console.log("data exists");
-          // take the old data
-          // push a new entry
-          let newData = [...prevData, newAffordance];
-          console.log("newData", newData);
-          // return it
-          return newData;
-        } else {
-          return [newAffordance];
-        }
+        /**
+         * If the array exists...
+         * spread the old data + push a new entry
+         * otherwise, return a new array with this value
+         */
+        return prevData ? [...prevData, val] : [val];
       });
-
-      // Reset the form state
-      setNewAffordance("");
-    } else {
-      console.log("there is no affordance to add");
     }
   };
 
-  const removeAffordance = (i: number) => {
-    console.log("remove place", i);
+  const handleUpdateAffordance = (prevVal: string, val: string) => {
+    console.log(`update affordance: ${val} for ${prevVal} in Place component`);
 
     setData(prevData => {
+      // do i need to safety check?
       if (!prevData) {
         return prevData;
       }
+
+      console.log("prevData", prevData);
+
+      // Find the val
+      const updateIndex = prevData.findIndex(x => x === prevVal);
+      console.log("removeIndex", updateIndex);
+
       // Copy
       const stateCopy = [...prevData];
+
       // Remove the item at i
-      stateCopy.splice(i, 1);
+      stateCopy.splice(updateIndex, 1, val);
       // log stuff
+
+      console.log("stateCopy", stateCopy);
+      return stateCopy;
+    });
+  };
+
+  const removeAffordance = (val: string) => {
+    console.log(`remove affordance: ${val} in Place component`);
+    console.log("val: ", val);
+
+    setData(prevData => {
+      // do i need to safety check?
+      if (!prevData) {
+        return prevData;
+      }
+
       console.log("prevData", prevData);
+
+      // Find the val
+      const removeIndex = prevData.findIndex(x => x === val);
+      console.log("removeIndex", removeIndex);
+
+      // Copy
+      const stateCopy = [...prevData];
+
+      // Remove the item at i
+      stateCopy.splice(removeIndex, 1);
+      // log stuff
+
       console.log("stateCopy", stateCopy);
       return stateCopy;
     });
   };
 
   return (
-    <Stack spacing="0" alignItems={"flex-start"}>
-      <PlaceItem onClick={handlePlace}>{title}</PlaceItem>
+    <Stack
+      spacing="0"
+      alignItems={"stretch"}
+      borderLeft="2px solid yellow"
+      minW="300px"
+    >
+      <PlaceItem onClick={handlePlace}>
+        {title}
+        {activeAffordance && ` + ${activeAffordance}`}
+      </PlaceItem>
+      {/* Affordances */}
       {data &&
         data.map((item, i) => (
-          <AffordanceItem key={i} onClick={() => removeAffordance(i)}>
+          <Affordance
+            key={i}
+            onRemove={removeAffordance}
+            onConfirm={handleUpdateAffordance}
+            initialValue={item}
+            initialView={activeAffordance === i ? "edit" : "read"}
+            onEdit={() => {
+              console.log("edit me");
+              // Set active affordance
+              setActiveAffordance(i);
+            }}
+          >
             {item}
-          </AffordanceItem>
+          </Affordance>
         ))}
+
       {/* Add new affordance */}
-      <Box pl="2">
-        {showAffordanceInput ? (
-          <>
-            <Input
-              variant="outline"
-              onChange={handleNewAffordanceInput}
-              flexBasis="100px"
-              value={newAffordance}
-            />
-            <Button size="xs" onClick={handleAddAffordance}>
-              Add
-            </Button>
-            <Button size="xs" onClick={() => setShowAffordanceInput(false)}>
-              Close
-            </Button>
-          </>
-        ) : (
-          <Button size="xs" onClick={() => setShowAffordanceInput(true)}>
-            Add New
-          </Button>
-        )}
-      </Box>
+      <Affordance onAdd={handleAddAffordance} initialView="new" />
     </Stack>
   );
 };
