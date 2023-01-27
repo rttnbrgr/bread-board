@@ -201,7 +201,7 @@ export const MockPane = () => {
   };
 
   return (
-    <Box bg="teal" width="fill-available">
+    <Box width="fill-available">
       <Box>newPlace: {newPlace}</Box>
       {/* Test */}
       <Stack direction="row" spacing="8">
