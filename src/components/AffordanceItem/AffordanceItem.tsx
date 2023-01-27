@@ -13,9 +13,6 @@ const boxStyles: BoxProps = {
 };
 
 const textStyles: TextProps = {
-  // borderLeft: "2px solid black",
-  // px: "2",
-  // py: "2",
   fontSize: "sm",
 };
 

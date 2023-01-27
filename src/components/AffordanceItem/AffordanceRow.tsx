@@ -127,9 +127,15 @@ export const Affordance = ({
   return (
     <Box>
       {viewState === "new" && (
+        // Fix this styles
         <Box p="2">
-          <Button size="xs" onClick={() => setViewState("edit")}>
-            Add New +
+          <Button
+            variant="outline"
+            borderRadius="0"
+            size="sm"
+            onClick={() => setViewState("edit")}
+          >
+            Add New Place
           </Button>
         </Box>
       )}

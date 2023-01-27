@@ -231,10 +231,11 @@ export const MockPane = () => {
           </>
         ) : (
           <>
-            <Button colorScheme="red" onClick={() => setShowPlaceInput(true)}>
-              Add New Place
-            </Button>
-            <Button onClick={() => setShowPlaceInput(true)}>
+            <Button
+              variant="outline"
+              borderRadius="0"
+              onClick={() => setShowPlaceInput(true)}
+            >
               Add New Place
             </Button>
           </>
