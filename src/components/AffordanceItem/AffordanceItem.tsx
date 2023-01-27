@@ -9,6 +9,7 @@ const boxStyles: BoxProps = {
   alignItems: "center",
   justifyContent: "space-between",
   borderBottom: "1px solid black",
+  px: "2",
 };
 
 const textStyles: TextProps = {

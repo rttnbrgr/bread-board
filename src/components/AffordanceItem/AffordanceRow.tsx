@@ -127,9 +127,11 @@ export const Affordance = ({
   return (
     <Box>
       {viewState === "new" && (
-        <Button size="xs" onClick={() => setViewState("edit")}>
-          Add New +
-        </Button>
+        <Box p="2">
+          <Button size="xs" onClick={() => setViewState("edit")}>
+            Add New +
+          </Button>
+        </Box>
       )}
       {viewState === "edit" && (
         <>
@@ -139,6 +141,7 @@ export const Affordance = ({
               size="sm"
               variant="flushed"
               colorScheme="teal"
+              px="2"
               value={affordanceInput}
             />
             <HStack spacing="0">
