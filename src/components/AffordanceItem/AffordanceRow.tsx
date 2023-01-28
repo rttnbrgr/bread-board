@@ -6,15 +6,17 @@ import { AffordanceItem } from "./AffordanceItem";
 
 type ViewState = "new" | "edit" | "read";
 
-type AffordanceOnlyProps = {
-  initialView?: ViewState;
-  initialValue?: string;
-  title?: string;
+export type ItemHandlers = {
   onAdd?: (x: string) => void;
   onConfirm?: (pv: string, x: string) => void;
   onCancel?: () => void;
-  onEdit?: (x: string) => void;
+  onEdit?: ((x: string) => void) | ((x?: string) => void);
   onRemove?: (x: string) => void;
+};
+
+type AffordanceOnlyProps = ItemHandlers & {
+  initialView?: ViewState;
+  initialValue?: string;
 };
 
 type AffordanceProps = StackProps & AffordanceOnlyProps;
@@ -22,7 +24,6 @@ type AffordanceProps = StackProps & AffordanceOnlyProps;
 export const Affordance = ({
   initialView = "read",
   initialValue = "",
-  title,
   onAdd = () => {
     console.log("add new");
   },
