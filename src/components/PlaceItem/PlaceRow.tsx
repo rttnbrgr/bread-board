@@ -92,6 +92,7 @@ export const PlaceRow = ({
     }
     if (logicMode === "existing") {
       console.log("logic mode: existing");
+      onCancel();
       resetInput(); // need to get this figured out
       setViewState("read");
     }

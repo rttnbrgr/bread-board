@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Stack, Input, AlertTitleProps } from "@chakra-ui/react";
 import { mockPlaceArray } from "../mock";
 import { PlaceStack, PlaceProps } from "../components";
+import { PlaceRow } from "../components/PlaceItem/PlaceRow";
 
 type PlaceData = Pick<PlaceProps, "title" | "items">;
 
@@ -107,17 +108,30 @@ export const MockPane = () => {
   };
 
   const handleAddPlaceNew = (val: string) => {
-    console.log("handleAddPlaceNew");
-    // if (val) {
-    //   setData(prevData => {
-    //     /**
-    //      * If the array exists...
-    //      * spread the old data + push a new entry
-    //      * otherwise, return a new array with this value
-    //      */
-    //     return prevData ? [...prevData, val] : [val];
-    //   });
-    // }
+    console.log("BUILDERMOCKPANE - handleAddPlaceNew", val);
+    if (val) {
+      setPlacesData(prevData => {
+        /**
+         * If the array exists...
+         * spread the old data + push a new entry
+         * otherwise, return a new array with this value
+         */
+        const newPlace: PlaceData = {
+          title: val,
+          items: [],
+        };
+        return prevData ? [...prevData, newPlace] : [newPlace];
+      });
+      // Local to this file;
+      setShowPlaceInput(false);
+    }
+  };
+
+  const handleCancelPlace = () => {
+    console.log("BUILDERMOCKPANE - handleCancelPlace");
+    if (showPlaceInput) {
+      setShowPlaceInput(false);
+    }
   };
 
   const removePlace = (val: string) => {
@@ -151,23 +165,16 @@ export const MockPane = () => {
               onEditPlace={handleEditPlace}
               onConfirmPlace={handleUpdatePlace}
               onRemovePlace={removePlace}
+              onCancelPlace={handleCancelPlace}
             />
           ))}
         {/* Add New Place */}
         {showPlaceInput ? (
-          <>
-            <Input
-              variant="outline"
-              onChange={handleNewPlaceInput}
-              onBlur={() => {
-                // setShowPlaceInput(false);
-              }}
-              flexBasis="100px"
-              value={newPlace}
-            />
-            <Button onClick={handleAddPlace}>Add</Button>
-            <Button onClick={() => setShowPlaceInput(false)}>Close</Button>
-          </>
+          <PlaceRow
+            initialView="edit"
+            onAdd={handleAddPlaceNew}
+            onCancel={handleCancelPlace}
+          />
         ) : (
           <>
             <Button

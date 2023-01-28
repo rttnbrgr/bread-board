@@ -26,6 +26,7 @@ export type PlaceProps = {
   onEditPlace?: (x?: number) => void;
   onConfirmPlace?: (pv: string, x: string) => void;
   onRemovePlace?: (x: string) => void;
+  onCancelPlace?: () => void;
 };
 
 type PlaceStackProps = StackProps & PlaceProps;
@@ -42,6 +43,7 @@ export const PlaceStack = ({
   onEditPlace,
   onConfirmPlace,
   onRemovePlace,
+  onCancelPlace,
   ...props
 }: PlaceStackProps) => {
   // Affordance Data
@@ -135,6 +137,7 @@ export const PlaceStack = ({
         onEdit={onEditPlace}
         onConfirm={onConfirmPlace}
         onRemove={onRemovePlace}
+        onCancel={onCancelPlace}
       >
         {title}
         {activeAffordance && ` + ${activeAffordance}`}
