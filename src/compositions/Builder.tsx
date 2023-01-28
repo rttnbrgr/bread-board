@@ -1,27 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  BoxProps,
-  Button,
-  Stack,
-  Text,
-  TextProps,
-  StackProps,
-  Input,
-} from "@chakra-ui/react";
-import {
-  useUser,
-  useSupabaseClient,
-  Session,
-} from "@supabase/auth-helpers-react";
+import { Box, Button, Stack, Input } from "@chakra-ui/react";
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { mockPlaceArray } from "../mock";
 import { Database } from "../utils/database.types";
-import {
-  PlaceItem,
-  AffordanceItem,
-  PlaceStack,
-  PlaceProps,
-} from "../components";
+import { PlaceStack, PlaceProps } from "../components";
 import { setEnvironmentData } from "worker_threads";
 
 export const SupabasePane = () => {
