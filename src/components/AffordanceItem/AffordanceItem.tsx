@@ -1,7 +1,4 @@
-import { useState } from "react";
 import { Box, BoxProps, Text, TextProps } from "@chakra-ui/react";
-import { CloseIcon } from "@chakra-ui/icons";
-import { IconButton } from "../chakra";
 
 const boxStyles: BoxProps = {
   h: "8",
@@ -16,29 +13,10 @@ const textStyles: TextProps = {
   fontSize: "sm",
 };
 
-type AffordanceItemProps = BoxProps & {
-  onClick?: (e?: any) => void;
-  children: React.ReactNode;
-};
-
-export const AffordanceItem = ({
-  children,
-  onClick,
-  ...boxProps
-}: AffordanceItemProps) => {
-  const showIcon = !!onClick;
+export const AffordanceItem = ({ children, ...boxProps }: BoxProps) => {
   return (
     <Box {...boxStyles} {...boxProps}>
-      <Text {...textStyles}>
-        {children}
-        {showIcon && (
-          <IconButton
-            aria-label="Remove"
-            onClick={onClick}
-            icon={<CloseIcon />}
-          />
-        )}
-      </Text>
+      <Text {...textStyles}>{children}</Text>
     </Box>
   );
 };
