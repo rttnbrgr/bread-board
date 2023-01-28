@@ -30,6 +30,20 @@ export const MockPane = () => {
     console.log("add affordance");
   };
 
+  //   const handleAddPlace2 = (val: string) => {
+  //     console.log("handleAddPlace");
+  //     if (val) {
+  //       setData(prevData => {
+  //         /**
+  //          * If the array exists...
+  //          * spread the old data + push a new entry
+  //          * otherwise, return a new array with this value
+  //          */
+  //         return prevData ? [...prevData, val] : [val];
+  //       });
+  //     }
+  //   };
+
   const handleAddPlace = () => {
     console.log("add place");
     // if theres a place
@@ -76,6 +90,32 @@ export const MockPane = () => {
     });
   };
 
+  const removePlaceNew = (val: string) => {
+    console.log(`remove place: ${val} in Place component`);
+    console.log("val: ", val);
+
+    setData(prevData => {
+      if (!prevData) {
+        return prevData;
+      }
+
+      console.log("prevData", prevData);
+      console.log("~~~~~~~~~~~~~");
+
+      /**
+       * Remove logic
+       * Find the index; copy the data; remove the index + return copied data
+       */
+      const removeIndex = prevData.findIndex(x => x.title === val);
+      const stateCopy = [...prevData];
+      stateCopy.splice(removeIndex, 1);
+
+      // console.log("removeIndex", removeIndex);
+      // console.log("stateCopy", stateCopy);
+      return stateCopy;
+    });
+  };
+
   return (
     <Box width="fill-available">
       <Box>newPlace: {newPlace}</Box>
@@ -84,10 +124,12 @@ export const MockPane = () => {
         {data &&
           data.map((place, i) => (
             <PlaceStack
+              key={i}
               {...place}
               onPlace={() => removePlace(i)}
               onClick={handleAddAffordance}
-              key={i}
+              //
+              onRemove={removePlaceNew}
             />
           ))}
         {/* Add New Place */}
