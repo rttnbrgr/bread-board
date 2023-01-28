@@ -13,7 +13,7 @@ type PlaceOnlyProps = {
   onAdd?: (x: string) => void;
   onConfirm?: (pv: string, x: string) => void;
   onCancel?: () => void;
-  onEdit?: (x: string) => void;
+  onEdit?: (x?: number) => void;
   onRemove?: (x: string) => void;
 };
 
@@ -41,33 +41,41 @@ export const PlaceRow = ({
   const [logicMode, setLogicMode] = useState<LogicMode>("new");
 
   // Input
-  const [affordanceInput, setAffordanceInput] = useState(
+  const [placeInput, setPlaceInput] = useState(
     initialValue ? initialValue : ""
   );
 
   const handleUpdateInput = (event: React.SyntheticEvent) => {
     const { target } = event;
     if (target) {
-      setAffordanceInput((target as HTMLInputElement).value); // why?!?!
+      setPlaceInput((target as HTMLInputElement).value); // why?!?!
     }
   };
 
-  const resetInput = () => setAffordanceInput(initialValue);
+  const resetInput = () => setPlaceInput(initialValue);
 
   // Hanlders
+  const handleEdit = () => {
+    console.log("PLACEROW - handledit");
+    // Update the state of the place row
+    setLogicMode("existing");
+    setViewState("edit");
+    // Call teh handler prop
+    onEdit();
+  };
+
   const handleConfirm = () => {
-    console.log("affordance: confirm");
+    console.log("PLACEROW - handleConfirm");
     if (logicMode === "new") {
       console.log("logic mode: new");
-      onAdd(affordanceInput);
+      onAdd(placeInput);
       resetInput();
       setViewState("new");
     }
     if (logicMode === "existing") {
       console.log("logic mode: existing");
       const initialValueRef = initialValue ? initialValue : "";
-      onConfirm(initialValueRef, affordanceInput);
-      // resetInput();
+      onConfirm(initialValueRef, placeInput);
       setViewState("read");
     }
     // log if invalid
@@ -75,7 +83,7 @@ export const PlaceRow = ({
   };
 
   const handleCancel = () => {
-    console.log("affordance: cancel");
+    console.log("PLACEROW - handleCancel");
     if (logicMode === "new") {
       console.log("logic mode: new");
       onCancel();
@@ -84,20 +92,13 @@ export const PlaceRow = ({
     }
     if (logicMode === "existing") {
       console.log("logic mode: existing");
-      // onConfirm(affordanceInput);
       resetInput(); // need to get this figured out
       setViewState("read");
     }
   };
 
-  const handleEdit = () => {
-    setLogicMode("existing");
-    onEdit("foo");
-    setViewState("edit");
-  };
-
   const handleRemove = () => {
-    onRemove(affordanceInput);
+    onRemove(placeInput);
   };
 
   // compute disabled
@@ -128,14 +129,14 @@ export const PlaceRow = ({
               variant="flushed"
               colorScheme="teal"
               px="2"
-              value={affordanceInput}
+              value={placeInput}
             />
             <HStack spacing="0">
               <IconButton
                 aria-label="Confirm"
                 onClick={handleConfirm}
                 icon={<CheckIcon />}
-                disabled={affordanceInput === ""}
+                disabled={placeInput === ""}
               />
               <IconButton
                 aria-label="Cancel"

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Stack, Input } from "@chakra-ui/react";
+import { Box, Button, Stack, Input, AlertTitleProps } from "@chakra-ui/react";
 import { mockPlaceArray } from "../mock";
 import { PlaceStack, PlaceProps } from "../components";
 
+type PlaceData = Pick<PlaceProps, "title" | "items">;
+
 export const MockPane = () => {
-  const [data, setData] = useState<PlaceProps[]>([]);
+  const [placesData, setPlacesData] = useState<PlaceData[]>([]);
 
   // Input
   const [showPlaceInput, setShowPlaceInput] = useState<Boolean>(false);
@@ -17,7 +19,7 @@ export const MockPane = () => {
   };
 
   function loadInitialData(initialData = mockPlaceArray) {
-    setData(initialData);
+    setPlacesData(initialData);
   }
 
   useEffect(() => {
@@ -25,24 +27,6 @@ export const MockPane = () => {
     loadInitialData();
     // load in the data
   }, []);
-
-  const handleAddAffordance = () => {
-    console.log("add affordance");
-  };
-
-  //   const handleAddPlace2 = (val: string) => {
-  //     console.log("handleAddPlace");
-  //     if (val) {
-  //       setData(prevData => {
-  //         /**
-  //          * If the array exists...
-  //          * spread the old data + push a new entry
-  //          * otherwise, return a new array with this value
-  //          */
-  //         return prevData ? [...prevData, val] : [val];
-  //       });
-  //     }
-  //   };
 
   const handleAddPlace = () => {
     console.log("add place");
@@ -54,7 +38,7 @@ export const MockPane = () => {
         items: [],
       };
       // then add it
-      setData(prevData => {
+      setPlacesData(prevData => {
         console.log("prevData", prevData);
 
         // take the old data
@@ -76,42 +60,80 @@ export const MockPane = () => {
     }
   };
 
-  const removePlace = (i: number) => {
-    console.log("remove place", i);
-    setData(prevData => {
-      // Copy
-      const stateCopy = [...prevData];
-      // Remove the item at i
-      stateCopy.splice(i, 1);
-      // log stuff
-      console.log("prevData", prevData);
-      console.log("stateCopy", stateCopy);
-      return stateCopy;
-    });
+  /**
+   * All new below here
+   */
+
+  const handleEditPlace = (i?: number) => {
+    console.log("BUILDERMOCKPANE - handleEditPlace");
   };
 
-  const removePlaceNew = (val: string) => {
-    console.log(`remove place: ${val} in Place component`);
-    console.log("val: ", val);
+  const handleUpdatePlace = (prevVal: string, val: string) => {
+    console.log("BUILDERMOCKPANE - handleUpdatePlace");
+    console.log(`${val} for ${prevVal}`);
 
-    setData(prevData => {
+    setPlacesData(prevData => {
+      // do i need to safety check?
       if (!prevData) {
         return prevData;
       }
 
-      console.log("prevData", prevData);
-      console.log("~~~~~~~~~~~~~");
+      /**
+       * Confirm/update logic
+       * Find the index;
+       * copy the data;
+       * update the object at the index;
+       * return new data
+       */
+
+      const updateIndex = prevData.findIndex(x => x.title === prevVal);
+      const stateCopy = [...prevData];
+      const updatePlaceObject = {
+        ...prevData[updateIndex],
+        title: val,
+      };
+      stateCopy.splice(updateIndex, 1, updatePlaceObject);
+
+      // Debug
+      // console.group("setPlacesData");
+      // console.log("prevData", prevData);
+      // console.log("removeIndex", updateIndex);
+      // console.log("updatePlaceObject", updatePlaceObject);
+      // console.log("stateCopy", stateCopy);
+      // console.groupEnd();
+
+      return stateCopy;
+    });
+  };
+
+  const handleAddPlaceNew = (val: string) => {
+    console.log("handleAddPlaceNew");
+    // if (val) {
+    //   setData(prevData => {
+    //     /**
+    //      * If the array exists...
+    //      * spread the old data + push a new entry
+    //      * otherwise, return a new array with this value
+    //      */
+    //     return prevData ? [...prevData, val] : [val];
+    //   });
+    // }
+  };
+
+  const removePlace = (val: string) => {
+    setPlacesData(prevData => {
+      if (!prevData) {
+        return prevData;
+      }
 
       /**
        * Remove logic
        * Find the index; copy the data; remove the index + return copied data
        */
+
       const removeIndex = prevData.findIndex(x => x.title === val);
       const stateCopy = [...prevData];
       stateCopy.splice(removeIndex, 1);
-
-      // console.log("removeIndex", removeIndex);
-      // console.log("stateCopy", stateCopy);
       return stateCopy;
     });
   };
@@ -121,15 +143,14 @@ export const MockPane = () => {
       <Box>newPlace: {newPlace}</Box>
       {/* Test */}
       <Stack direction="row" spacing="8">
-        {data &&
-          data.map((place, i) => (
+        {placesData &&
+          placesData.map((place, i) => (
             <PlaceStack
               key={i}
               {...place}
-              onPlace={() => removePlace(i)}
-              onClick={handleAddAffordance}
-              //
-              onRemove={removePlaceNew}
+              onEditPlace={handleEditPlace}
+              onConfirmPlace={handleUpdatePlace}
+              onRemovePlace={removePlace}
             />
           ))}
         {/* Add New Place */}

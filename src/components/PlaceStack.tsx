@@ -20,40 +20,28 @@ import { PlaceRow } from "./PlaceItem/PlaceRow";
 export type PlaceProps = {
   title: string;
   items?: string[];
-  onPlace?: (e?: any) => void;
   onAffordance?: () => void;
   onAdd?: () => void;
   // Place
-  onEdit?: (x: string) => void;
-  onRemove?: (x: string) => void;
+  onEditPlace?: (x?: number) => void;
+  onConfirmPlace?: (pv: string, x: string) => void;
+  onRemovePlace?: (x: string) => void;
 };
-
-// type AffordanceOnlyProps = {
-//   initialView?: ViewState;
-//   initialValue?: string;
-//   title?: string;
-//   onAdd?: (x: string) => void;
-//   onConfirm?: (pv: string, x: string) => void;
-//   onCancel?: () => void;
-//   onEdit?: (x: string) => void;
-
-// };
 
 type PlaceStackProps = StackProps & PlaceProps;
 
 export const PlaceStack = ({
   title,
   items,
-  onPlace: handlePlace = () => {
-    console.log("place click");
-  },
   onAffordance = () => {
     console.log("Affordance click");
   },
   onAdd = () => {
     console.log("add new");
   },
-  onRemove,
+  onEditPlace,
+  onConfirmPlace,
+  onRemovePlace,
   ...props
 }: PlaceStackProps) => {
   // Affordance Data
@@ -101,6 +89,11 @@ export const PlaceStack = ({
     });
   };
 
+  const handleEditAffordance = (i: number) => {
+    // Set active affordance
+    setActiveAffordance(i);
+  };
+
   const removeAffordance = (val: string) => {
     console.log(`remove affordance: ${val} in Place component`);
     console.log("val: ", val);
@@ -129,80 +122,6 @@ export const PlaceStack = ({
     });
   };
 
-  /**
-   * place handlers
-   *
-   *
-   */
-  const handleAddPlace = (val: string) => {
-    console.log("handleAddPlace");
-    // if (val) {
-    //   setData(prevData => {
-    //     /**
-    //      * If the array exists...
-    //      * spread the old data + push a new entry
-    //      * otherwise, return a new array with this value
-    //      */
-    //     return prevData ? [...prevData, val] : [val];
-    //   });
-    // }
-  };
-
-  const handleUpdatePlace = (prevVal: string, val: string) => {
-    console.log(`update place: ${val} for ${prevVal} in Place component`);
-
-    // setData(prevData => {
-    //   // do i need to safety check?
-    //   if (!prevData) {
-    //     return prevData;
-    //   }
-
-    //   console.log("prevData", prevData);
-
-    //   // Find the val
-    //   const updateIndex = prevData.findIndex(x => x === prevVal);
-    //   console.log("removeIndex", updateIndex);
-
-    //   // Copy
-    //   const stateCopy = [...prevData];
-
-    //   // Remove the item at i
-    //   stateCopy.splice(updateIndex, 1, val);
-    //   // log stuff
-
-    //   console.log("stateCopy", stateCopy);
-    //   return stateCopy;
-    // });
-  };
-
-  // const removePlace = (val: string) => {
-  //   console.log(`remove place: ${val} in Place component`);
-  //   console.log("val: ", val);
-
-  //   // setData(prevData => {
-  //   //   // do i need to safety check?
-  //   //   if (!prevData) {
-  //   //     return prevData;
-  //   //   }
-
-  //   //   console.log("prevData", prevData);
-
-  //   //   // Find the val
-  //   //   const removeIndex = prevData.findIndex(x => x === val);
-  //   //   console.log("removeIndex", removeIndex);
-
-  //   //   // Copy
-  //   //   const stateCopy = [...prevData];
-
-  //   //   // Remove the item at i
-  //   //   stateCopy.splice(removeIndex, 1);
-  //   //   // log stuff
-
-  //   //   console.log("stateCopy", stateCopy);
-  //   //   return stateCopy;
-  //   // });
-  // };
-
   return (
     <Stack
       spacing="0"
@@ -210,17 +129,15 @@ export const PlaceStack = ({
       borderLeft="2px solid black"
       minW="300px"
     >
-      <PlaceItem onClick={handlePlace}>
-        {title}
-        {activeAffordance && ` + ${activeAffordance}`}
-      </PlaceItem>
-      {/* new */}
       <PlaceRow
-        onRemove={onRemove}
-        onConfirm={handleUpdatePlace}
         initialValue={title}
+        initialView="read"
+        onEdit={onEditPlace}
+        onConfirm={onConfirmPlace}
+        onRemove={onRemovePlace}
       >
         {title}
+        {activeAffordance && ` + ${activeAffordance}`}
       </PlaceRow>
       {/* Affordances */}
       {data &&
@@ -232,9 +149,7 @@ export const PlaceStack = ({
             initialValue={item}
             initialView={activeAffordance === i ? "edit" : "read"}
             onEdit={() => {
-              console.log("edit me");
-              // Set active affordance
-              setActiveAffordance(i);
+              handleEditAffordance(i);
             }}
           >
             {item}
