@@ -4,15 +4,41 @@ import {
   Button,
   Stack,
   Container,
-  UseDisclosureProps
+  UseDisclosureProps,
+  BoxProps,
 } from "@chakra-ui/react";
+import { isWhiteSpaceLike } from "typescript";
 
-const HeaderBarStyles = {
-  // bg: "tomato",
+const Logo = (props: BoxProps) => {
+  return (
+    <Box
+      p="1"
+      px="2"
+      bg="white"
+      color="black"
+      fontWeight="bold"
+      lineHeight="2"
+      {...props}
+    >
+      PATH
+    </Box>
+  );
+};
+
+const HeaderBarWrapperStyles = {
+  // bg: "#11998e",
+  // bgGradient: "linear(to-r, #38ef7d, #11998e)",
+  // Convert these to theme
+  bg: "black",
+  color: "white",
+};
+
+const HeaderBarContainerStyles = {
   px: 4,
   py: 2,
   display: "flex",
-  justifyContent: "space-between"
+  justifyContent: "space-between",
+  maxW: "container.xl",
 };
 
 type Props = {
@@ -26,7 +52,7 @@ export const HeaderBar = ({
   onToggle,
   isOpen,
   accountIsOpen,
-  accountOnToggle
+  accountOnToggle,
 }: Props) => {
   const supabase = useSupabaseClient();
   const session = useSession();
@@ -43,18 +69,9 @@ export const HeaderBar = ({
   };
 
   return (
-    <Box bg="#11998e" bgGradient="linear(to-r, #38ef7d, #11998e)">
-      <Container maxW="container.xl" {...HeaderBarStyles}>
-        <Box
-          p="1"
-          px="2"
-          bg="white"
-          color="black"
-          fontWeight="bold"
-          lineHeight="2"
-        >
-          PATH
-        </Box>
+    <Box {...HeaderBarWrapperStyles}>
+      <Container {...HeaderBarContainerStyles}>
+        <Logo />
         <Stack direction="row">
           {session && (
             <Button colorScheme="white" variant="link" onClick={onAccount}>

@@ -1,19 +1,7 @@
 import { useState } from "react";
-import {
-  Box,
-  BoxProps,
-  Button,
-  Stack,
-  Text,
-  TextProps,
-  StackProps,
-  IconButton,
-  Input,
-  HStack,
-} from "@chakra-ui/react";
+import { Box, Button, StackProps, Input, HStack } from "@chakra-ui/react";
 import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
-import { IconButton as IconButtonNew } from "../chakra";
-import { PlaceItem } from "../PlaceItem";
+import { IconButton } from "../chakra";
 import { AffordanceItem } from "./AffordanceItem";
 
 type ViewState = "new" | "edit" | "read";
@@ -45,18 +33,10 @@ export const Affordance = ({
   children,
   ...props
 }: AffordanceProps) => {
-  // edit row
-  // read row
-  // new row
-  //
-  // Verified
-  const [showAffordanceInput, setShowAffordanceInput] =
-    useState<Boolean>(false);
-
   // State of the Row
-
   const [viewState, setViewState] = useState<ViewState>(initialView);
 
+  // View fork
   type LogicMode = "new" | "existing";
   const [logicMode, setLogicMode] = useState<LogicMode>("new");
 
@@ -127,9 +107,17 @@ export const Affordance = ({
   return (
     <Box>
       {viewState === "new" && (
-        <Button size="xs" onClick={() => setViewState("edit")}>
-          Add New +
-        </Button>
+        // Fix this styles
+        <Box p="2">
+          <Button
+            variant="outline"
+            borderRadius="0"
+            size="sm"
+            onClick={() => setViewState("edit")}
+          >
+            Add New Place
+          </Button>
+        </Box>
       )}
       {viewState === "edit" && (
         <>
@@ -139,16 +127,17 @@ export const Affordance = ({
               size="sm"
               variant="flushed"
               colorScheme="teal"
+              px="2"
               value={affordanceInput}
             />
             <HStack spacing="0">
-              <IconButtonNew
+              <IconButton
                 aria-label="Confirm"
                 onClick={handleConfirm}
                 icon={<CheckIcon />}
                 disabled={affordanceInput === ""}
               />
-              <IconButtonNew
+              <IconButton
                 aria-label="Cancel"
                 onClick={handleCancel}
                 icon={<CloseIcon />}
@@ -168,12 +157,12 @@ export const Affordance = ({
           <AffordanceItem>{children}</AffordanceItem>
           {/* Should hide until hover */}
           <HStack spacing="0" opacity={isShown ? "100%" : "10%"}>
-            <IconButtonNew
+            <IconButton
               aria-label="Edit"
               onClick={handleEdit}
               icon={<EditIcon />}
             />
-            <IconButtonNew
+            <IconButton
               aria-label="Remove"
               onClick={handleRemove}
               icon={<DeleteIcon />}

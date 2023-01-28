@@ -117,7 +117,7 @@ export const PlaceStack = ({
     <Stack
       spacing="0"
       alignItems={"stretch"}
-      borderLeft="2px solid yellow"
+      borderLeft="2px solid black"
       minW="300px"
     >
       <PlaceItem onClick={handlePlace}>

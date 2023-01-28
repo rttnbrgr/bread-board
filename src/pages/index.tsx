@@ -44,10 +44,10 @@ const Home = () => {
         </Container>
       ) : (
         // Logged In
-        <Box bg="grey.100">
+        <Box>
           <Container maxW="container.xl">
             <Flex>
-              <Box bg="orange" flex="3 1 200px">
+              <Box flex="3 1 200px">
                 <PrimaryPane />
               </Box>
               <Box
