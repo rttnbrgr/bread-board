@@ -13,13 +13,15 @@ export const PlaceItem = ({ children, onClick }: PlaceItemProps) => {
       <Text bg="black" color="white" py="2" px="2">
         {children}
       </Text>
-      <IconButton
-        aria-label="Remove"
-        variant="ghost"
-        colorScheme="gray"
-        onClick={onClick}
-        icon={<SmallCloseIcon />}
-      />
+      {onClick && (
+        <IconButton
+          aria-label="Remove"
+          variant="ghost"
+          colorScheme="gray"
+          onClick={onClick}
+          icon={<SmallCloseIcon />}
+        />
+      )}
     </Box>
   );
 };
