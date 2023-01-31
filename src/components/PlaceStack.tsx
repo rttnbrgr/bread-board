@@ -15,13 +15,18 @@ import { IconButton as IconButtonNew } from "./chakra";
 import { PlaceItem } from "./PlaceItem";
 import { Affordance, AffordanceItem } from "./AffordanceItem";
 import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
+import { PlaceRow } from "./PlaceItem/PlaceRow";
 
 export type PlaceProps = {
   title: string;
   items?: string[];
-  onPlace?: (e?: any) => void;
   onAffordance?: () => void;
   onAdd?: () => void;
+  // Place
+  onEditPlace?: (x?: number) => void;
+  onConfirmPlace?: (pv: string, x: string) => void;
+  onRemovePlace?: (x: string) => void;
+  onCancelPlace?: () => void;
 };
 
 type PlaceStackProps = StackProps & PlaceProps;
@@ -29,15 +34,16 @@ type PlaceStackProps = StackProps & PlaceProps;
 export const PlaceStack = ({
   title,
   items,
-  onPlace: handlePlace = () => {
-    console.log("place click");
-  },
   onAffordance = () => {
     console.log("Affordance click");
   },
   onAdd = () => {
     console.log("add new");
   },
+  onEditPlace,
+  onConfirmPlace,
+  onRemovePlace,
+  onCancelPlace,
   ...props
 }: PlaceStackProps) => {
   // Affordance Data
@@ -85,6 +91,11 @@ export const PlaceStack = ({
     });
   };
 
+  const handleEditAffordance = (i: number) => {
+    // Set active affordance
+    setActiveAffordance(i);
+  };
+
   const removeAffordance = (val: string) => {
     console.log(`remove affordance: ${val} in Place component`);
     console.log("val: ", val);
@@ -120,10 +131,17 @@ export const PlaceStack = ({
       borderLeft="2px solid black"
       minW="300px"
     >
-      <PlaceItem onClick={handlePlace}>
+      <PlaceRow
+        initialValue={title}
+        initialView="read"
+        onEdit={onEditPlace}
+        onConfirm={onConfirmPlace}
+        onRemove={onRemovePlace}
+        onCancel={onCancelPlace}
+      >
         {title}
         {activeAffordance && ` + ${activeAffordance}`}
-      </PlaceItem>
+      </PlaceRow>
       {/* Affordances */}
       {data &&
         data.map((item, i) => (
@@ -134,9 +152,7 @@ export const PlaceStack = ({
             initialValue={item}
             initialView={activeAffordance === i ? "edit" : "read"}
             onEdit={() => {
-              console.log("edit me");
-              // Set active affordance
-              setActiveAffordance(i);
+              handleEditAffordance(i);
             }}
           >
             {item}

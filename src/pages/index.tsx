@@ -10,14 +10,14 @@ const Home = () => {
     isOpen: accountIsOpen,
     onOpen: accountOnOpen,
     onClose: accountOnClose,
-    onToggle: accountOnToggle
+    onToggle: accountOnToggle,
   } = useDisclosure({ defaultIsOpen: false });
 
   const accountDisclosure = {
     accountIsOpen,
     accountOnOpen,
     accountOnClose,
-    accountOnToggle
+    accountOnToggle,
   };
   const supabase = useSupabaseClient();
 
@@ -45,7 +45,7 @@ const Home = () => {
       ) : (
         // Logged In
         <Box>
-          <Container maxW="container.xl">
+          <Container maxW="container.xl" style={{ overflowX: "scroll" }}>
             <Flex>
               <Box flex="3 1 200px">
                 <PrimaryPane />

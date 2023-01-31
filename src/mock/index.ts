@@ -3,17 +3,17 @@ export const mockPlace = {
   items: [
     "Sample 1",
     "Also Another",
-    "Pinochio"
+    "Pinochio",
     // "Affordance danceadff"
-  ]
+  ],
 };
 
 export const mockPlaceArray = [
-  mockPlace
-  // {
-  //   title: "Number 2",
-  //   items: ["Goerge", "Jerry", "Elaine"]
-  // },
+  mockPlace,
+  {
+    title: "Number 2",
+    items: ["Goerge", "Jerry", "Elaine"],
+  },
   // {
   //   title: "Blazers",
   //   items: ["Dame", "Ant", "Jerami Grant", "Josh Hart", "GP2"]

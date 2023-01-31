@@ -2,28 +2,27 @@ import { useState } from "react";
 import { Box, Button, StackProps, Input, HStack } from "@chakra-ui/react";
 import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { IconButton } from "../chakra";
-import { AffordanceItem } from "./AffordanceItem";
+import { PlaceItem } from "./PlaceItem";
 
 type ViewState = "new" | "edit" | "read";
 
-export type ItemHandlers = {
+type PlaceOnlyProps = {
+  initialView?: ViewState;
+  initialValue?: string;
+  title?: string;
   onAdd?: (x: string) => void;
   onConfirm?: (pv: string, x: string) => void;
   onCancel?: () => void;
-  onEdit?: ((x: string) => void) | ((x?: string) => void);
+  onEdit?: (x?: number) => void;
   onRemove?: (x: string) => void;
 };
 
-type AffordanceOnlyProps = ItemHandlers & {
-  initialView?: ViewState;
-  initialValue?: string;
-};
+type PlaceRowProps = StackProps & PlaceOnlyProps;
 
-type AffordanceProps = StackProps & AffordanceOnlyProps;
-
-export const Affordance = ({
+export const PlaceRow = ({
   initialView = "read",
   initialValue = "",
+  title,
   onAdd = () => {
     console.log("add new");
   },
@@ -33,7 +32,7 @@ export const Affordance = ({
   onRemove = () => {},
   children,
   ...props
-}: AffordanceProps) => {
+}: PlaceRowProps) => {
   // State of the Row
   const [viewState, setViewState] = useState<ViewState>(initialView);
 
@@ -42,33 +41,41 @@ export const Affordance = ({
   const [logicMode, setLogicMode] = useState<LogicMode>("new");
 
   // Input
-  const [affordanceInput, setAffordanceInput] = useState(
+  const [placeInput, setPlaceInput] = useState(
     initialValue ? initialValue : ""
   );
 
   const handleUpdateInput = (event: React.SyntheticEvent) => {
     const { target } = event;
     if (target) {
-      setAffordanceInput((target as HTMLInputElement).value); // why?!?!
+      setPlaceInput((target as HTMLInputElement).value); // why?!?!
     }
   };
 
-  const resetInput = () => setAffordanceInput(initialValue);
+  const resetInput = () => setPlaceInput(initialValue);
 
   // Hanlders
+  const handleEdit = () => {
+    console.log("PLACEROW - handledit");
+    // Update the state of the place row
+    setLogicMode("existing");
+    setViewState("edit");
+    // Call teh handler prop
+    onEdit();
+  };
+
   const handleConfirm = () => {
-    console.log("affordance: confirm");
+    console.log("PLACEROW - handleConfirm");
     if (logicMode === "new") {
       console.log("logic mode: new");
-      onAdd(affordanceInput);
+      onAdd(placeInput);
       resetInput();
       setViewState("new");
     }
     if (logicMode === "existing") {
       console.log("logic mode: existing");
       const initialValueRef = initialValue ? initialValue : "";
-      onConfirm(initialValueRef, affordanceInput);
-      // resetInput();
+      onConfirm(initialValueRef, placeInput);
       setViewState("read");
     }
     // log if invalid
@@ -76,7 +83,7 @@ export const Affordance = ({
   };
 
   const handleCancel = () => {
-    console.log("affordance: cancel");
+    console.log("PLACEROW - handleCancel");
     if (logicMode === "new") {
       console.log("logic mode: new");
       onCancel();
@@ -85,20 +92,14 @@ export const Affordance = ({
     }
     if (logicMode === "existing") {
       console.log("logic mode: existing");
-      // onConfirm(affordanceInput);
+      onCancel();
       resetInput(); // need to get this figured out
       setViewState("read");
     }
   };
 
-  const handleEdit = () => {
-    setLogicMode("existing");
-    onEdit("foo");
-    setViewState("edit");
-  };
-
   const handleRemove = () => {
-    onRemove(affordanceInput);
+    onRemove(placeInput);
   };
 
   // compute disabled
@@ -129,14 +130,14 @@ export const Affordance = ({
               variant="flushed"
               colorScheme="teal"
               px="2"
-              value={affordanceInput}
+              value={placeInput}
             />
             <HStack spacing="0">
               <IconButton
                 aria-label="Confirm"
                 onClick={handleConfirm}
                 icon={<CheckIcon />}
-                disabled={affordanceInput === ""}
+                disabled={placeInput === ""}
               />
               <IconButton
                 aria-label="Cancel"
@@ -155,7 +156,7 @@ export const Affordance = ({
           onMouseLeave={() => setIsShown(false)}
         >
           {/* Show potential new one */}
-          <AffordanceItem>{children}</AffordanceItem>
+          <PlaceItem>{children}</PlaceItem>
           {/* Should hide until hover */}
           <HStack spacing="0" opacity={isShown ? "100%" : "10%"}>
             <IconButton
