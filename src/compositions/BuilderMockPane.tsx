@@ -38,7 +38,6 @@ export const MockPane = () => {
 
   const handleUpdatePlace = (prevVal: string, val: string) => {
     console.log("BUILDERMOCKPANE - handleUpdatePlace");
-    console.log(`${val} for ${prevVal}`);
 
     setPlacesData(prevData => {
       // do i need to safety check?
@@ -61,14 +60,6 @@ export const MockPane = () => {
         title: val,
       };
       stateCopy.splice(updateIndex, 1, updatePlaceObject);
-
-      // Debug
-      // console.group("setPlacesData");
-      // console.log("prevData", prevData);
-      // console.log("removeIndex", updateIndex);
-      // console.log("updatePlaceObject", updatePlaceObject);
-      // console.log("stateCopy", stateCopy);
-      // console.groupEnd();
 
       return stateCopy;
     });
