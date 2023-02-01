@@ -131,7 +131,7 @@ export const MockPane = () => {
         {/* Add New Place */}
         {showPlaceInput ? (
           <PlaceRow
-            initialView="edit"
+            isNew
             onAdd={handleAddPlaceNew}
             onCancel={handleCancelPlace}
           />

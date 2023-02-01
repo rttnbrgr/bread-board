@@ -133,7 +133,6 @@ export const PlaceStack = ({
     >
       <PlaceRow
         initialValue={title}
-        initialView="read"
         onEdit={onEditPlace}
         onConfirm={onConfirmPlace}
         onRemove={onRemovePlace}
