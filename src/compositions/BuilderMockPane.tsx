@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Stack, Input, AlertTitleProps } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Stack,
+  Input,
+  AlertTitleProps,
+  VStack,
+} from "@chakra-ui/react";
 import { mockPlaceArray } from "../mock";
 import { PlaceStack, PlaceProps } from "../components";
 import { PlaceRow } from "../components/PlaceItem/PlaceRow";
+import { useLocalStorage } from "../hooks";
 
 type PlaceData = Pick<PlaceProps, "title" | "items">;
 
 export const MockPane = () => {
-  const [placesData, setPlacesData] = useState<PlaceData[]>([]);
+  const [placesData, setPlacesData] = useLocalStorage<PlaceData[]>(
+    "placesLocalData",
+    []
+  );
 
   // Input
   const [showPlaceInput, setShowPlaceInput] = useState<Boolean>(false);
-  const [newPlace, setNewPlace] = useState("");
-
-  const handleNewPlaceInput = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    setNewPlace(event.target.value); // why?!?!
-  };
 
   function loadInitialData(initialData = mockPlaceArray) {
     setPlacesData(initialData);
@@ -25,45 +29,8 @@ export const MockPane = () => {
 
   useEffect(() => {
     console.log("load primary pane");
-    loadInitialData();
-    // load in the data
+    // loadInitialData();
   }, []);
-
-  const handleAddPlace = () => {
-    console.log("add place");
-    // if theres a place
-    if (!!newPlace) {
-      // setup the new entry
-      const newEntry = {
-        title: newPlace,
-        items: [],
-      };
-      // then add it
-      setPlacesData(prevData => {
-        console.log("prevData", prevData);
-
-        // take the old data
-        // push a new entry
-        let newData = [...prevData, newEntry];
-
-        // return it
-        return newData;
-      });
-
-      // Reset the form state
-      setNewPlace("");
-
-      // setData(prevData => {
-      //   return [{ title: "onlye one", items: [] }];
-      // });
-    } else {
-      console.log("there is no place to add");
-    }
-  };
-
-  /**
-   * All new below here
-   */
 
   const handleEditPlace = (i?: number) => {
     console.log("BUILDERMOCKPANE - handleEditPlace");
@@ -153,8 +120,22 @@ export const MockPane = () => {
   };
 
   return (
-    <Box width="fill-available">
-      <Box>newPlace: {newPlace}</Box>
+    <Box width="fill-available" position="relative">
+      <Box
+        p="4"
+        bg="teal.300"
+        borderRadius="base"
+        display="inline-flex"
+        right="calc(100% + 1em)"
+        top="4"
+        mb="4"
+      >
+        <VStack spacing="2">
+          <Button variant="solid" size="sm" onClick={() => loadInitialData()}>
+            Reload data
+          </Button>
+        </VStack>
+      </Box>
       {/* Test */}
       <Stack direction="row" spacing="8">
         {placesData &&
