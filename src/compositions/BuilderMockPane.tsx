@@ -8,8 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { mockPlaceArray } from "../mock";
-import { PlaceStack, PlaceProps } from "../components";
-import { PlaceRow } from "../components/PlaceItem/PlaceRow";
+import { PlaceRow, PlaceStack, PlaceProps } from "../components";
 import { useLocalStorage } from "../hooks";
 
 type PlaceData = Pick<PlaceProps, "title" | "items">;

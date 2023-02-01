@@ -11,11 +11,11 @@ import {
   Input,
   HStack,
 } from "@chakra-ui/react";
-import { IconButton as IconButtonNew } from "./chakra";
-import { PlaceItem } from "./PlaceItem";
-import { Affordance, AffordanceItem } from "./AffordanceItem";
+import { IconButton as IconButtonNew } from "../chakra";
+import { PlaceItem } from ".";
+import { Affordance, AffordanceItem } from "../AffordanceItem";
 import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
-import { PlaceRow } from "./PlaceItem/PlaceRow";
+import { PlaceRow } from "./PlaceRow";
 
 export type PlaceProps = {
   title: string;
