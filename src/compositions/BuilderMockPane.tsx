@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Stack, Input, AlertTitleProps } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Stack,
+  Input,
+  AlertTitleProps,
+  VStack,
+} from "@chakra-ui/react";
 import { mockPlaceArray } from "../mock";
 import { PlaceStack, PlaceProps } from "../components";
 import { PlaceRow } from "../components/PlaceItem/PlaceRow";
+import { useLocalStorage } from "../hooks";
 
 type PlaceData = Pick<PlaceProps, "title" | "items">;
 
 export const MockPane = () => {
-  const [placesData, setPlacesData] = useState<PlaceData[]>([]);
+  const [placesData, setPlacesData] = useLocalStorage<PlaceData[]>(
+    "placesLocalData",
+    []
+  );
 
   // Input
   const [showPlaceInput, setShowPlaceInput] = useState<Boolean>(false);
@@ -25,7 +36,7 @@ export const MockPane = () => {
 
   useEffect(() => {
     console.log("load primary pane");
-    loadInitialData();
+    // loadInitialData();
     // load in the data
   }, []);
 
@@ -153,8 +164,7 @@ export const MockPane = () => {
   };
 
   return (
-    <Box width="fill-available">
-      <Box>newPlace: {newPlace}</Box>
+    <Box width="fill-available" position="relative">
       {/* Test */}
       <Stack direction="row" spacing="8">
         {placesData &&
