@@ -26,18 +26,9 @@ export const MockPane = () => {
     setPlacesData(initialData);
   }
 
-  useEffect(() => {
-    console.log("load primary pane");
-    // loadInitialData();
-  }, []);
-
-  const handleEditPlace = (i?: number) => {
-    console.log("BUILDERMOCKPANE - handleEditPlace");
-  };
+  const handleEditPlace = (i?: number) => {};
 
   const handleUpdatePlace = (prevVal: string, val: string) => {
-    console.log("BUILDERMOCKPANE - handleUpdatePlace");
-
     setPlacesData(prevData => {
       // do i need to safety check?
       if (!prevData) {
@@ -65,7 +56,6 @@ export const MockPane = () => {
   };
 
   const handleAddPlaceNew = (val: string) => {
-    console.log("BUILDERMOCKPANE - handleAddPlaceNew", val);
     if (val) {
       setPlacesData(prevData => {
         /**
@@ -85,7 +75,6 @@ export const MockPane = () => {
   };
 
   const handleCancelPlace = () => {
-    console.log("BUILDERMOCKPANE - handleCancelPlace");
     if (showPlaceInput) {
       setShowPlaceInput(false);
     }
