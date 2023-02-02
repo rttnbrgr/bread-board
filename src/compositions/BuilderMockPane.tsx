@@ -129,23 +129,25 @@ export const MockPane = () => {
             />
           ))}
         {/* Add New Place */}
-        {showPlaceInput ? (
-          <PlaceRow
-            isNew
-            onAdd={handleAddPlaceNew}
-            onCancel={handleCancelPlace}
-          />
-        ) : (
-          <>
-            <Button
-              variant="outline"
-              borderRadius="0"
-              onClick={() => setShowPlaceInput(true)}
-            >
-              Add New Place
-            </Button>
-          </>
-        )}
+        <Box minW="300px">
+          {showPlaceInput ? (
+            <PlaceRow
+              isNew
+              onAdd={handleAddPlaceNew}
+              onCancel={handleCancelPlace}
+            />
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                borderRadius="0"
+                onClick={() => setShowPlaceInput(true)}
+              >
+                Add New Place
+              </Button>
+            </>
+          )}
+        </Box>
       </Stack>
     </Box>
   );
