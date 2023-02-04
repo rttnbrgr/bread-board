@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   Text,
   Box,
@@ -11,6 +11,7 @@ import {
 import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { IconButton } from "../chakra";
 import { PlaceItem } from "./PlaceItem";
+import { useKeyPress } from "../../hooks";
 
 type PlaceOnlyProps = {
   initialValue?: string;
@@ -37,11 +38,20 @@ export const PlaceRow = ({
 }: PlaceRowProps) => {
   // State of the Row
   const [isEditing, setIsEditing] = useState<Boolean>(isNew); // only is editing by default on new
+  const inputRef = useRef<HTMLInputElement>(null);
+  const escPress: boolean = useKeyPress("Escape");
+  const returnPress: boolean = useKeyPress("Enter");
 
   // Input
   const [placeInput, setPlaceInput] = useState(
     initialValue ? initialValue : ""
   );
+
+  useLayoutEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
 
   const handleUpdateInput = (event: React.SyntheticEvent) => {
     const { target } = event;
@@ -88,12 +98,39 @@ export const PlaceRow = ({
 
   const [showActions, setShowActions] = useState(false);
 
+  function handleKeyPress(e) {
+    const key = e.key;
+    const code = e.code;
+    // console.log(`key: ${key}, code: ${code}`, states);
+    console.log(`key: ${key}, code: ${code}`);
+    // var key = e.key;
+    // var regex = /[0-9]|\./;
+    // if (!regex.test(key)) {
+    //   e.preventDefault();
+    // } else {
+    //   console.log("You pressed a key: " + key);
+    // }
+
+    switch (code) {
+      case "Enter":
+        handleConfirm();
+        break;
+      case "Escape":
+        handleCancel();
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <Box>
       {isEditing && (
         <HStack justifyContent="space-between">
           <Input
+            ref={inputRef}
             onChange={handleUpdateInput}
+            onKeyDown={e => handleKeyPress(e)}
             size="sm"
             variant="flushed"
             colorScheme="teal"
