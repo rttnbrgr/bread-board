@@ -1,22 +1,5 @@
 import { useState } from "react";
 
-// // Usage
-// function App() {
-//   // Similar to useState but first arg is key to the value in local storage.
-//   const [name, setName] = useLocalStorage<string>("name", "Bob");
-//   return (
-//     <div>
-//       <input
-//         type="text"
-//         placeholder="Enter your name"
-//         value={name}
-//         onChange={e => setName(e.target.value)}
-//       />
-//     </div>
-//   );
-// }
-// Hook
-
 function useLocalStorage<T>(key: string, initialValue: T) {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
