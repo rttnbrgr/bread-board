@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { KeyboardEventHandler, useLayoutEffect, useRef, useState } from "react";
 import {
   Text,
   Box,
@@ -39,8 +39,6 @@ export const PlaceRow = ({
   // State of the Row
   const [isEditing, setIsEditing] = useState<Boolean>(isNew); // only is editing by default on new
   const inputRef = useRef<HTMLInputElement>(null);
-  const escPress: boolean = useKeyPress("Escape");
-  const returnPress: boolean = useKeyPress("Enter");
 
   // Input
   const [placeInput, setPlaceInput] = useState(
@@ -98,18 +96,9 @@ export const PlaceRow = ({
 
   const [showActions, setShowActions] = useState(false);
 
-  function handleKeyPress(e) {
+  function handleKeyPress(e: KeyboardEvent) {
     const key = e.key;
     const code = e.code;
-    // console.log(`key: ${key}, code: ${code}`, states);
-    console.log(`key: ${key}, code: ${code}`);
-    // var key = e.key;
-    // var regex = /[0-9]|\./;
-    // if (!regex.test(key)) {
-    //   e.preventDefault();
-    // } else {
-    //   console.log("You pressed a key: " + key);
-    // }
 
     switch (code) {
       case "Enter":
@@ -130,6 +119,7 @@ export const PlaceRow = ({
           <Input
             ref={inputRef}
             onChange={handleUpdateInput}
+            // onKeyDown={(e: KeyboardEventHandler<HTMLInputElement>) => handleKeyPress(e)}
             onKeyDown={e => handleKeyPress(e)}
             size="sm"
             variant="flushed"
