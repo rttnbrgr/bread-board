@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { mockPlaceArray } from "../mock";
 import { PlaceRow, PlaceStack, PlaceProps } from "../components";
-import { useLocalStorage } from "../hooks";
+import { useKeyDebug, useKeyPress, useLocalStorage } from "../hooks";
 
 type PlaceData = Pick<PlaceProps, "title" | "items">;
 
@@ -18,6 +18,13 @@ export const MockPane = () => {
     "placesLocalData",
     []
   );
+
+  const happyPress: boolean = useKeyPress("h");
+  const sadPress: boolean = useKeyPress("s");
+  const robotPress: boolean = useKeyPress("r");
+  const foxPress: boolean = useKeyPress("f");
+  const escPress: boolean = useKeyPress("Escape");
+  const returnPress: boolean = useKeyPress("Enter");
 
   // Input
   const [showPlaceInput, setShowPlaceInput] = useState<Boolean>(false);
@@ -98,8 +105,10 @@ export const MockPane = () => {
     });
   };
 
+  useKeyDebug();
+
   return (
-    <Box width="fill-available" position="relative">
+    <Box width="fill-available" position="relative" pt="4">
       <Box
         p="4"
         bg="teal.300"
@@ -110,6 +119,17 @@ export const MockPane = () => {
         mb="4"
       >
         <VStack spacing="2">
+          <div>
+            <div>h, s, r, f</div>
+            <div>
+              {happyPress && "😊"}
+              {sadPress && "😢"}
+              {robotPress && "🤖"}
+              {foxPress && "🦊"}
+              {escPress && "🍔"}
+              {returnPress && "🐈"}
+            </div>
+          </div>
           <Button variant="solid" size="sm" onClick={() => loadInitialData()}>
             Reload data
           </Button>
