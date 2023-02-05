@@ -12,6 +12,82 @@ import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { IconButton } from "../chakra";
 import { PlaceItem } from "./PlaceItem";
 import { useKeyPress } from "../../hooks";
+import { AffordanceItem } from "../AffordanceItem";
+
+// type UpdateItemProps = {
+//   children: React.ReactNode;
+//   onEdit?: () => void;
+//   onRemove?: () => void;
+//   inputRef: any;
+// };
+
+// const UpdateItemWrapper = ({
+//   children,
+//   onEdit,
+//   onRemove,
+//   inputRef,
+//   onChange,
+// }: UpdateItemProps) => {
+//   const [showActions, setShowActions] = useState(false);
+
+//   return (
+//     <HStack justifyContent="space-between">
+//       <Input
+//         ref={inputRef}
+//         onChange={handleUpdateInput}
+//         // onKeyDown={(e: KeyboardEventHandler<HTMLInputElement>) => handleKeyPress(e)}
+//         onKeyDown={e => handleKeyPress(e)}
+//         size="sm"
+//         variant="flushed"
+//         colorScheme="teal"
+//         px="2"
+//         value={placeInput}
+//       />
+//       <HStack spacing="0">
+//         <IconButton
+//           aria-label="Confirm"
+//           onClick={handleConfirm}
+//           icon={<CheckIcon />}
+//           disabled={placeInput === ""}
+//         />
+//         <IconButton
+//           aria-label="Cancel"
+//           onClick={handleCancel}
+//           icon={<CloseIcon />}
+//         />
+//       </HStack>
+//     </HStack>
+//   );
+// };
+
+type ReadItemProps = {
+  children: React.ReactNode;
+  onEdit?: () => void;
+  onRemove?: () => void;
+};
+
+const ReadItemWrapper = ({ children, onEdit, onRemove }: ReadItemProps) => {
+  const [showActions, setShowActions] = useState(false);
+
+  return (
+    <HStack
+      justifyContent="space-between"
+      onMouseEnter={() => setShowActions(true)}
+      onMouseLeave={() => setShowActions(false)}
+    >
+      {children}
+      {/* Should hide until hover */}
+      <HStack spacing="0" opacity={showActions ? "100%" : "10%"}>
+        <IconButton aria-label="Edit" onClick={onEdit} icon={<EditIcon />} />
+        <IconButton
+          aria-label="Remove"
+          onClick={onRemove}
+          icon={<DeleteIcon />}
+        />
+      </HStack>
+    </HStack>
+  );
+};
 
 type PlaceOnlyProps = {
   initialValue?: string;
@@ -21,6 +97,7 @@ type PlaceOnlyProps = {
   onCancel?: () => void;
   onEdit?: (x?: number) => void;
   onRemove?: (x: string) => void;
+  optIn?: boolean;
 };
 
 type PlaceRowProps = BoxProps & PlaceOnlyProps;
@@ -34,6 +111,7 @@ export const PlaceRow = ({
   onEdit = () => {},
   onRemove = () => {},
   children,
+  optIn,
   ...props
 }: PlaceRowProps) => {
   // State of the Row
@@ -101,10 +179,6 @@ export const PlaceRow = ({
     setIsEditing(false);
   };
 
-  const handleRemove = () => {
-    onRemove(placeInput);
-  };
-
   const [showActions, setShowActions] = useState(false);
 
   function handleKeyPress(e: KeyboardEvent) {
@@ -122,6 +196,13 @@ export const PlaceRow = ({
         break;
     }
   }
+
+  /**
+   * for read item
+   */
+  const handleRemove = () => {
+    onRemove(placeInput);
+  };
 
   return (
     <Box>
@@ -154,27 +235,24 @@ export const PlaceRow = ({
         </HStack>
       )}
       {!isEditing && (
-        <HStack
-          justifyContent="space-between"
-          onMouseEnter={() => setShowActions(true)}
-          onMouseLeave={() => setShowActions(false)}
-        >
-          <PlaceItem>{children}</PlaceItem>
-          {/* Should hide until hover */}
-          <HStack spacing="0" opacity={showActions ? "100%" : "10%"}>
-            <IconButton
-              aria-label="Edit"
-              onClick={handleEdit}
-              icon={<EditIcon />}
-            />
-            <IconButton
-              aria-label="Remove"
-              onClick={handleRemove}
-              icon={<DeleteIcon />}
-            />
-          </HStack>
-        </HStack>
+        <ReadItemWrapper onEdit={handleEdit} onRemove={handleRemove}>
+          {/* {!optIn && <PlaceItem>{children}</PlaceItem>} */}
+          {children}
+        </ReadItemWrapper>
       )}
     </Box>
   );
 };
+
+export const ItemRow = PlaceRow;
+
+export const PlaceRowNew = ({ children, ...props }) => (
+  <ItemRow {...props}>
+    <PlaceItem>{children}</PlaceItem>
+  </ItemRow>
+);
+export const AffordanceRowNew = ({ children, ...props }) => (
+  <ItemRow {...props}>
+    <AffordanceItem>{children}</AffordanceItem>
+  </ItemRow>
+);

@@ -12,10 +12,10 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { IconButton as IconButtonNew } from "../chakra";
-import { PlaceItem } from ".";
+import { PlaceItem, ItemRow } from ".";
 import { Affordance, AffordanceItem } from "../AffordanceItem";
 import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
-import { PlaceRow } from "./PlaceRow";
+import { PlaceRow, PlaceRowNew } from "./PlaceRow";
 
 export type PlaceProps = {
   title: string;
@@ -114,20 +114,21 @@ export const PlaceStack = ({
       borderLeft="2px solid black"
       minW="300px"
     >
-      <PlaceRow
+      <PlaceRowNew
         initialValue={title}
         onEdit={onEditPlace}
         onConfirm={onConfirmPlace}
         onRemove={onRemovePlace}
         onCancel={onCancelPlace}
+        optIn
       >
         {title}
         {activeAffordance && ` + ${activeAffordance}`}
-      </PlaceRow>
+      </PlaceRowNew>
       {/* Affordances */}
       {data &&
         data.map((item, i) => (
-          <Affordance
+          <ItemRow
             key={i}
             initialValue={item}
             onRemove={removeAffordance}
@@ -137,8 +138,8 @@ export const PlaceStack = ({
               handleEditAffordance(i);
             }}
           >
-            {item}
-          </Affordance>
+            <AffordanceItem>{item}</AffordanceItem>
+          </ItemRow>
         ))}
 
       {/* Add new affordance */}
