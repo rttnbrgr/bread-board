@@ -19,13 +19,6 @@ export const MockPane = () => {
     []
   );
 
-  const happyPress: boolean = useKeyPress("h");
-  const sadPress: boolean = useKeyPress("s");
-  const robotPress: boolean = useKeyPress("r");
-  const foxPress: boolean = useKeyPress("f");
-  const escPress: boolean = useKeyPress("Escape");
-  const returnPress: boolean = useKeyPress("Enter");
-
   // Input
   const [showPlaceInput, setShowPlaceInput] = useState<Boolean>(false);
 
@@ -62,7 +55,7 @@ export const MockPane = () => {
     });
   };
 
-  const handleAddPlaceNew = (val: string) => {
+  const handleAddPlace = (val: string) => {
     if (val) {
       setPlacesData(prevData => {
         /**
@@ -105,36 +98,28 @@ export const MockPane = () => {
     });
   };
 
-  useKeyDebug();
+  // useKeyDebug();
+  const showDebugBox = true;
 
   return (
     <Box width="fill-available" position="relative" pt="4">
-      <Box
-        p="4"
-        bg="teal.300"
-        borderRadius="base"
-        display="inline-flex"
-        right="calc(100% + 1em)"
-        top="4"
-        mb="4"
-      >
-        <VStack spacing="2">
-          <div>
-            <div>h, s, r, f</div>
-            <div>
-              {happyPress && "😊"}
-              {sadPress && "😢"}
-              {robotPress && "🤖"}
-              {foxPress && "🦊"}
-              {escPress && "🍔"}
-              {returnPress && "🐈"}
-            </div>
-          </div>
-          <Button variant="solid" size="sm" onClick={() => loadInitialData()}>
-            Reload data
-          </Button>
-        </VStack>
-      </Box>
+      {showDebugBox && (
+        <Box
+          p="4"
+          bg="teal.300"
+          borderRadius="base"
+          display="inline-flex"
+          right="calc(100% + 1em)"
+          top="4"
+          mb="4"
+        >
+          <VStack spacing="2">
+            <Button variant="solid" size="sm" onClick={() => loadInitialData()}>
+              Reload data
+            </Button>
+          </VStack>
+        </Box>
+      )}
       {/* Test */}
       <Stack direction="row" spacing="8">
         {placesData &&
@@ -153,7 +138,7 @@ export const MockPane = () => {
           {showPlaceInput ? (
             <PlaceRow
               isNew
-              onAdd={handleAddPlaceNew}
+              onAdd={handleAddPlace}
               onCancel={handleCancelPlace}
             />
           ) : (
