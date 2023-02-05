@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { mockPlaceArray } from "../mock";
 import { PlaceRow, PlaceStack, PlaceProps } from "../components";
-import { useLocalStorage } from "../hooks";
+import { useKeyDebug, useKeyPress, useLocalStorage } from "../hooks";
 
 type PlaceData = Pick<PlaceProps, "title" | "items">;
 
@@ -55,7 +55,7 @@ export const MockPane = () => {
     });
   };
 
-  const handleAddPlaceNew = (val: string) => {
+  const handleAddPlace = (val: string) => {
     if (val) {
       setPlacesData(prevData => {
         /**
@@ -98,23 +98,28 @@ export const MockPane = () => {
     });
   };
 
+  // useKeyDebug();
+  const showDebugBox = true;
+
   return (
-    <Box width="fill-available" position="relative">
-      <Box
-        p="4"
-        bg="teal.300"
-        borderRadius="base"
-        display="inline-flex"
-        right="calc(100% + 1em)"
-        top="4"
-        mb="4"
-      >
-        <VStack spacing="2">
-          <Button variant="solid" size="sm" onClick={() => loadInitialData()}>
-            Reload data
-          </Button>
-        </VStack>
-      </Box>
+    <Box width="fill-available" position="relative" pt="4">
+      {showDebugBox && (
+        <Box
+          p="4"
+          bg="teal.300"
+          borderRadius="base"
+          display="inline-flex"
+          right="calc(100% + 1em)"
+          top="4"
+          mb="4"
+        >
+          <VStack spacing="2">
+            <Button variant="solid" size="sm" onClick={() => loadInitialData()}>
+              Reload data
+            </Button>
+          </VStack>
+        </Box>
+      )}
       {/* Test */}
       <Stack direction="row" spacing="8">
         {placesData &&
@@ -129,23 +134,25 @@ export const MockPane = () => {
             />
           ))}
         {/* Add New Place */}
-        {showPlaceInput ? (
-          <PlaceRow
-            isNew
-            onAdd={handleAddPlaceNew}
-            onCancel={handleCancelPlace}
-          />
-        ) : (
-          <>
-            <Button
-              variant="outline"
-              borderRadius="0"
-              onClick={() => setShowPlaceInput(true)}
-            >
-              Add New Place
-            </Button>
-          </>
-        )}
+        <Box minW="300px">
+          {showPlaceInput ? (
+            <PlaceRow
+              isNew
+              onAdd={handleAddPlace}
+              onCancel={handleCancelPlace}
+            />
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                borderRadius="0"
+                onClick={() => setShowPlaceInput(true)}
+              >
+                Add New Place
+              </Button>
+            </>
+          )}
+        </Box>
       </Stack>
     </Box>
   );

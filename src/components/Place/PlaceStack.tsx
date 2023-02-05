@@ -48,6 +48,8 @@ export const PlaceStack = ({
 }: PlaceStackProps) => {
   // Affordance Data
   const [data, setData] = useState(items && [...items]);
+  const [showAffordanceInput, setShowAffordanceInput] =
+    useState<Boolean>(false);
   const [activeAffordance, setActiveAffordance] =
     useState<Number | undefined>(undefined);
 
@@ -61,32 +63,22 @@ export const PlaceStack = ({
          */
         return prevData ? [...prevData, val] : [val];
       });
+
+      setShowAffordanceInput(false);
     }
   };
 
   const handleUpdateAffordance = (prevVal: string, val: string) => {
-    console.log(`update affordance: ${val} for ${prevVal} in Place component`);
-
     setData(prevData => {
       // do i need to safety check?
       if (!prevData) {
         return prevData;
       }
 
-      console.log("prevData", prevData);
-
-      // Find the val
       const updateIndex = prevData.findIndex(x => x === prevVal);
-      console.log("removeIndex", updateIndex);
-
-      // Copy
       const stateCopy = [...prevData];
-
-      // Remove the item at i
       stateCopy.splice(updateIndex, 1, val);
-      // log stuff
 
-      console.log("stateCopy", stateCopy);
       return stateCopy;
     });
   };
@@ -96,30 +88,21 @@ export const PlaceStack = ({
     setActiveAffordance(i);
   };
 
-  const removeAffordance = (val: string) => {
-    console.log(`remove affordance: ${val} in Place component`);
-    console.log("val: ", val);
+  const handleCancelAffordance = () => {
+    if (showAffordanceInput) {
+      setShowAffordanceInput(false);
+    }
+  };
 
+  const removeAffordance = (val: string) => {
     setData(prevData => {
-      // do i need to safety check?
       if (!prevData) {
         return prevData;
       }
 
-      console.log("prevData", prevData);
-
-      // Find the val
       const removeIndex = prevData.findIndex(x => x === val);
-      console.log("removeIndex", removeIndex);
-
-      // Copy
       const stateCopy = [...prevData];
-
-      // Remove the item at i
       stateCopy.splice(removeIndex, 1);
-      // log stuff
-
-      console.log("stateCopy", stateCopy);
       return stateCopy;
     });
   };
@@ -146,10 +129,10 @@ export const PlaceStack = ({
         data.map((item, i) => (
           <Affordance
             key={i}
+            initialValue={item}
             onRemove={removeAffordance}
             onConfirm={handleUpdateAffordance}
-            initialValue={item}
-            initialView={activeAffordance === i ? "edit" : "read"}
+            onCancel={handleCancelAffordance}
             onEdit={() => {
               handleEditAffordance(i);
             }}
@@ -159,7 +142,26 @@ export const PlaceStack = ({
         ))}
 
       {/* Add new affordance */}
-      <Affordance onAdd={handleAddAffordance} initialView="new" />
+      <Box p="2">
+        {showAffordanceInput ? (
+          <Affordance
+            isNew
+            onAdd={handleAddAffordance}
+            onCancel={handleCancelAffordance}
+          />
+        ) : (
+          <Button
+            variant="outline"
+            borderRadius="0"
+            size="sm"
+            onClick={() => {
+              setShowAffordanceInput(true);
+            }}
+          >
+            Add New Item
+          </Button>
+        )}
+      </Box>
     </Stack>
   );
 };

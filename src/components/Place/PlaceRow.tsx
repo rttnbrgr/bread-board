@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { KeyboardEventHandler, useLayoutEffect, useRef, useState } from "react";
 import {
   Text,
   Box,
@@ -11,10 +11,11 @@ import {
 import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { IconButton } from "../chakra";
 import { PlaceItem } from "./PlaceItem";
+import { useKeyPress } from "../../hooks";
 
 type PlaceOnlyProps = {
   initialValue?: string;
-  isNew: boolean;
+  isNew?: boolean;
   onAdd?: (x: string) => void;
   onConfirm?: (pv: string, x: string) => void;
   onCancel?: () => void;
@@ -37,11 +38,23 @@ export const PlaceRow = ({
 }: PlaceRowProps) => {
   // State of the Row
   const [isEditing, setIsEditing] = useState<Boolean>(isNew); // only is editing by default on new
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Input
+  /**
+   * Input Relevant Logic
+   *
+   * Focus | Update | Reset
+   *
+   */
   const [placeInput, setPlaceInput] = useState(
     initialValue ? initialValue : ""
   );
+
+  useLayoutEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
 
   const handleUpdateInput = (event: React.SyntheticEvent) => {
     const { target } = event;
@@ -52,7 +65,13 @@ export const PlaceRow = ({
 
   const resetInput = () => setPlaceInput(initialValue);
 
-  // Hanlders
+  /**
+   * CRUD Handlers
+   * ---
+   *
+   * edit | confirm | cancel | remove
+   *
+   */
   const handleEdit = () => {
     console.log("PLACEROW - handledit");
     setIsEditing(true);
@@ -88,12 +107,31 @@ export const PlaceRow = ({
 
   const [showActions, setShowActions] = useState(false);
 
+  function handleKeyPress(e: KeyboardEvent) {
+    const key = e.key;
+    const code = e.code;
+
+    switch (code) {
+      case "Enter":
+        handleConfirm();
+        break;
+      case "Escape":
+        handleCancel();
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <Box>
       {isEditing && (
         <HStack justifyContent="space-between">
           <Input
+            ref={inputRef}
             onChange={handleUpdateInput}
+            // onKeyDown={(e: KeyboardEventHandler<HTMLInputElement>) => handleKeyPress(e)}
+            onKeyDown={e => handleKeyPress(e)}
             size="sm"
             variant="flushed"
             colorScheme="teal"
@@ -115,7 +153,6 @@ export const PlaceRow = ({
           </HStack>
         </HStack>
       )}
-      {/*  */}
       {!isEditing && (
         <HStack
           justifyContent="space-between"
