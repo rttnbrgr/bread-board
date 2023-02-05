@@ -15,7 +15,7 @@ import { useKeyPress } from "../../hooks";
 
 type PlaceOnlyProps = {
   initialValue?: string;
-  isNew: boolean;
+  isNew?: boolean;
   onAdd?: (x: string) => void;
   onConfirm?: (pv: string, x: string) => void;
   onCancel?: () => void;
@@ -40,7 +40,12 @@ export const PlaceRow = ({
   const [isEditing, setIsEditing] = useState<Boolean>(isNew); // only is editing by default on new
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Input
+  /**
+   * Input Relevant Logic
+   *
+   * Focus | Update | Reset
+   *
+   */
   const [placeInput, setPlaceInput] = useState(
     initialValue ? initialValue : ""
   );
@@ -60,7 +65,13 @@ export const PlaceRow = ({
 
   const resetInput = () => setPlaceInput(initialValue);
 
-  // Hanlders
+  /**
+   * CRUD Handlers
+   * ---
+   *
+   * edit | confirm | cancel | remove
+   *
+   */
   const handleEdit = () => {
     console.log("PLACEROW - handledit");
     setIsEditing(true);
@@ -142,7 +153,6 @@ export const PlaceRow = ({
           </HStack>
         </HStack>
       )}
-      {/*  */}
       {!isEditing && (
         <HStack
           justifyContent="space-between"

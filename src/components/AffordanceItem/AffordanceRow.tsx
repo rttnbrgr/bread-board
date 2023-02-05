@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Box, Button, StackProps, Input, HStack } from "@chakra-ui/react";
 import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { IconButton } from "../chakra";
@@ -15,18 +15,17 @@ export type ItemHandlers = {
 };
 
 type AffordanceOnlyProps = ItemHandlers & {
-  initialView?: ViewState;
   initialValue?: string;
+  // bew
+  isNew?: boolean;
 };
 
 type AffordanceProps = StackProps & AffordanceOnlyProps;
 
 export const Affordance = ({
-  initialView = "read",
   initialValue = "",
-  onAdd = () => {
-    console.log("add new");
-  },
+  isNew = false,
+  onAdd = () => {},
   onConfirm = () => {},
   onCancel = () => {},
   onEdit = () => {},
@@ -35,16 +34,24 @@ export const Affordance = ({
   ...props
 }: AffordanceProps) => {
   // State of the Row
-  const [viewState, setViewState] = useState<ViewState>(initialView);
+  const [isEditing, setIsEditing] = useState<Boolean>(isNew);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // View fork
-  type LogicMode = "new" | "existing";
-  const [logicMode, setLogicMode] = useState<LogicMode>("new");
-
-  // Input
+  /**
+   * Input Relevant Logic
+   *
+   * Focus | Update | Reset
+   *
+   */
   const [affordanceInput, setAffordanceInput] = useState(
     initialValue ? initialValue : ""
   );
+
+  useLayoutEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
 
   const handleUpdateInput = (event: React.SyntheticEvent) => {
     const { target } = event;
@@ -55,109 +62,100 @@ export const Affordance = ({
 
   const resetInput = () => setAffordanceInput(initialValue);
 
-  // Hanlders
+  /**
+   * CRUD Handlers
+   * ---
+   *
+   * edit | confirm | cancel | remove
+   *
+   */
+
+  const handleEdit = () => {
+    console.log("AFFORDANCE - ROW - handleEdit");
+    setIsEditing(true);
+    onEdit("foo");
+  };
+
   const handleConfirm = () => {
-    console.log("affordance: confirm");
-    if (logicMode === "new") {
-      console.log("logic mode: new");
+    console.log("AFFORDANCE - ROW - handleConfirm");
+
+    if (isNew) {
       onAdd(affordanceInput);
       resetInput();
-      setViewState("new");
+      return;
     }
-    if (logicMode === "existing") {
-      console.log("logic mode: existing");
-      const initialValueRef = initialValue ? initialValue : "";
-      onConfirm(initialValueRef, affordanceInput);
-      // resetInput();
-      setViewState("read");
-    }
-    // log if invalid
-    //   console.log("there is no affordance to add");
+
+    const initialValueRef = initialValue ? initialValue : "";
+    onConfirm(initialValueRef, affordanceInput);
+    setIsEditing(false);
   };
 
   const handleCancel = () => {
-    console.log("affordance: cancel");
-    if (logicMode === "new") {
-      console.log("logic mode: new");
-      onCancel();
-      resetInput();
-      setViewState("new");
-    }
-    if (logicMode === "existing") {
-      console.log("logic mode: existing");
-      // onConfirm(affordanceInput);
-      resetInput(); // need to get this figured out
-      setViewState("read");
-    }
-  };
-
-  const handleEdit = () => {
-    setLogicMode("existing");
-    onEdit("foo");
-    setViewState("edit");
+    console.log("AFFORDANCE - ROW - handleCancel");
+    onCancel();
+    resetInput();
+    setIsEditing(false);
   };
 
   const handleRemove = () => {
     onRemove(affordanceInput);
   };
 
-  // compute disabled
-  // compute hover
-  const [isShown, setIsShown] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+
+  function handleKeyPress(e: KeyboardEvent) {
+    const key = e.key;
+    const code = e.code;
+
+    switch (code) {
+      case "Enter":
+        handleConfirm();
+        break;
+      case "Escape":
+        handleCancel();
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
     <Box>
-      {viewState === "new" && (
-        // Fix this styles
-        <Box p="2">
-          <Button
-            variant="outline"
-            borderRadius="0"
+      {isEditing && (
+        <HStack justifyContent="space-between">
+          <Input
+            ref={inputRef}
+            onChange={handleUpdateInput}
+            onKeyDown={e => handleKeyPress(e)}
             size="sm"
-            onClick={() => setViewState("edit")}
-          >
-            Add New Place
-          </Button>
-        </Box>
-      )}
-      {viewState === "edit" && (
-        <>
-          <HStack justifyContent="space-between">
-            <Input
-              onChange={handleUpdateInput}
-              size="sm"
-              variant="flushed"
-              colorScheme="teal"
-              px="2"
-              value={affordanceInput}
+            variant="flushed"
+            colorScheme="teal"
+            px="2"
+            value={affordanceInput}
+          />
+          <HStack spacing="0">
+            <IconButton
+              aria-label="Confirm"
+              onClick={handleConfirm}
+              icon={<CheckIcon />}
+              disabled={affordanceInput === ""}
             />
-            <HStack spacing="0">
-              <IconButton
-                aria-label="Confirm"
-                onClick={handleConfirm}
-                icon={<CheckIcon />}
-                disabled={affordanceInput === ""}
-              />
-              <IconButton
-                aria-label="Cancel"
-                onClick={handleCancel}
-                icon={<CloseIcon />}
-              />
-            </HStack>
+            <IconButton
+              aria-label="Cancel"
+              onClick={handleCancel}
+              icon={<CloseIcon />}
+            />
           </HStack>
-        </>
+        </HStack>
       )}
-      {/*  */}
-      {viewState === "read" && (
+      {!isEditing && (
         <HStack
           justifyContent="space-between"
-          onMouseEnter={() => setIsShown(true)}
-          onMouseLeave={() => setIsShown(false)}
+          onMouseEnter={() => setShowActions(true)}
+          onMouseLeave={() => setShowActions(false)}
         >
-          {/* Show potential new one */}
           <AffordanceItem>{children}</AffordanceItem>
-          {/* Should hide until hover */}
-          <HStack spacing="0" opacity={isShown ? "100%" : "10%"}>
+          <HStack spacing="0" opacity={showActions ? "100%" : "0%"}>
             <IconButton
               aria-label="Edit"
               onClick={handleEdit}
