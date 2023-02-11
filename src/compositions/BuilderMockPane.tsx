@@ -99,7 +99,7 @@ export const MockPane = () => {
   };
 
   // useKeyDebug();
-  const showDebugBox = true;
+  const showDebugBox = false;
 
   return (
     <Box width="fill-available" position="relative" pt="4">
