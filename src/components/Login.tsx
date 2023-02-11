@@ -7,7 +7,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalCloseButton
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 

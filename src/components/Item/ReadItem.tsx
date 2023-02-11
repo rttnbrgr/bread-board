@@ -24,7 +24,7 @@ export const ReadItemWrapper = ({
     >
       {children}
       {/* Should hide until hover */}
-      <HStack spacing="0" opacity={showActions ? "100%" : "10%"}>
+      <HStack spacing="0" opacity={showActions ? "100%" : "0%"}>
         <IconButton aria-label="Edit" onClick={onEdit} icon={<EditIcon />} />
         <IconButton
           aria-label="Remove"

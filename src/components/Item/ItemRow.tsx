@@ -1,18 +1,7 @@
 import { KeyboardEventHandler, useLayoutEffect, useRef, useState } from "react";
-import {
-  Text,
-  Box,
-  Button,
-  StackProps,
-  Input,
-  HStack,
-  BoxProps,
-} from "@chakra-ui/react";
-import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import { Box, Input, HStack, StackProps, BoxProps } from "@chakra-ui/react";
+import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
 import { IconButton } from "../chakra";
-import { PlaceItemText } from "../Place/PlaceItemText";
-import { useKeyPress } from "../../hooks";
-import { AffordanceItemText } from "../Affordance";
 import { ReadItemWrapper } from "./ReadItem";
 
 // type UpdateItemProps = {
@@ -153,7 +142,8 @@ export const ItemRow = ({
 
   const [showActions, setShowActions] = useState(false);
 
-  function handleKeyPress(e: KeyboardEvent) {
+  // TODO: type this correct
+  function handleKeyPress(e: any) {
     const key = e.key;
     const code = e.code;
 
@@ -184,7 +174,7 @@ export const ItemRow = ({
             ref={inputRef}
             onChange={handleUpdateInput}
             // onKeyDown={(e: KeyboardEventHandler<HTMLInputElement>) => handleKeyPress(e)}
-            onKeyDown={e => handleKeyPress(e)}
+            onKeyDown={handleKeyPress}
             size="sm"
             variant="flushed"
             colorScheme="teal"

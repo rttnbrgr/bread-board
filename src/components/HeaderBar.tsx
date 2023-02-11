@@ -1,13 +1,5 @@
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import {
-  Box,
-  Button,
-  Stack,
-  Container,
-  UseDisclosureProps,
-  BoxProps,
-} from "@chakra-ui/react";
-import { isWhiteSpaceLike } from "typescript";
+import { Box, Button, Stack, Container, BoxProps } from "@chakra-ui/react";
 
 const Logo = (props: BoxProps) => {
   return (

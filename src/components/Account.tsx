@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   useUser,
   useSupabaseClient,
-  Session
+  Session,
 } from "@supabase/auth-helpers-react";
 import {
   Button,
@@ -10,10 +10,8 @@ import {
   Stack,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Text,
-  Box
+  Box,
 } from "@chakra-ui/react";
 import Avatar from "./Avatar";
 import { Database } from "../utils/database.types";
@@ -65,7 +63,7 @@ export function Account({ session }: { session: Session }) {
   async function updateProfile({
     username,
     website,
-    avatar_url
+    avatar_url,
   }: {
     username: Profiles["username"];
     website: Profiles["website"];
@@ -80,7 +78,7 @@ export function Account({ session }: { session: Session }) {
         username,
         website,
         avatar_url,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
       let { error } = await supabase.from("profiles").upsert(updates);

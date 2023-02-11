@@ -16,7 +16,7 @@ export const SupabasePane = () => {
 
   useEffect(() => {
     console.log("load primary pane");
-    getPlaces();
+    // getPlaces();
   }, []);
 
   async function getPlaces() {
@@ -33,7 +33,7 @@ export const SupabasePane = () => {
 
       if (data) {
         console.log("if places data!", data);
-        setPlacesData(data);
+        // setPlacesData(data); // TODO fix this
       }
     } catch (error) {
       alert("Error loading places data!");
@@ -90,7 +90,7 @@ export const SupabasePane = () => {
       hey + {loading && "Loading ..."}
       {/* Real */}
       <Stack direction="row" spacing="8">
-        {placesData &&
+        {/* {placesData &&
           placesData.map((place, i) => {
             console.log("PLACE! ", place);
             return (
@@ -103,14 +103,18 @@ export const SupabasePane = () => {
                 key={place.id_new}
               />
             );
-          })}
+          })} */}
         <Button onClick={handleAddPlace}>Add New Place</Button>
       </Stack>
     </Box>
   );
 };
 
-export const PrimaryPane = (useLocal = true) => {
+type PrimaryPaneProps = {
+  useLocal?: boolean;
+};
+
+export const PrimaryPane = ({ useLocal = true }: PrimaryPaneProps) => {
   return useLocal ? <MockPane /> : <SupabasePane />;
 };
 
