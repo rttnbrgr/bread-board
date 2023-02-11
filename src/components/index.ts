@@ -1,5 +1,5 @@
 export * from "./Account";
-export * from "./AffordanceItem";
+export * from "./Affordance";
 export * from "./HeaderBar";
 export * from "./Login";
 export * from "./Place";

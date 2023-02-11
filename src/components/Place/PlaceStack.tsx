@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { Box, Button, Stack, StackProps } from "@chakra-ui/react";
 import { ItemRow } from "../Item";
-import {
-  Affordance,
-  AffordanceItemText,
-  AffordanceRow,
-} from "../AffordanceItem";
+import { Affordance, AffordanceItemText, AffordanceRow } from "../Affordance";
 import { PlaceRow } from "./PlaceRow";
 
 export type PlaceProps = {

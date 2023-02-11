@@ -12,7 +12,7 @@ import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { IconButton } from "../chakra";
 import { PlaceItemText } from "../Place/PlaceItemText";
 import { useKeyPress } from "../../hooks";
-import { AffordanceItemText } from "../AffordanceItem";
+import { AffordanceItemText } from "../Affordance";
 import { ReadItemWrapper } from "./ReadItem";
 
 // type UpdateItemProps = {
