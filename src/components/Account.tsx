@@ -2,14 +2,23 @@ import { useState, useEffect } from "react";
 import {
   useUser,
   useSupabaseClient,
-  Session
+  Session,
 } from "@supabase/auth-helpers-react";
+import {
+  Button,
+  Input,
+  Stack,
+  FormControl,
+  FormLabel,
+  Text,
+  Box,
+} from "@chakra-ui/react";
 import Avatar from "./Avatar";
-
 import { Database } from "../utils/database.types";
+
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 
-export default function Account({ session }: { session: Session }) {
+export function Account({ session }: { session: Session }) {
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
   const [loading, setLoading] = useState(true);
@@ -22,6 +31,7 @@ export default function Account({ session }: { session: Session }) {
   }, [session]);
 
   async function getProfile() {
+    // console.log("get Profile?");
     try {
       setLoading(true);
       if (!user) throw new Error("No user");
@@ -37,6 +47,7 @@ export default function Account({ session }: { session: Session }) {
       }
 
       if (data) {
+        // console.log("if data!", data);
         setUsername(data.username);
         setWebsite(data.website);
         setAvatarUrl(data.avatar_url);
@@ -52,7 +63,7 @@ export default function Account({ session }: { session: Session }) {
   async function updateProfile({
     username,
     website,
-    avatar_url
+    avatar_url,
   }: {
     username: Profiles["username"];
     website: Profiles["website"];
@@ -67,7 +78,7 @@ export default function Account({ session }: { session: Session }) {
         username,
         website,
         avatar_url,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
       let { error } = await supabase.from("profiles").upsert(updates);
@@ -82,57 +93,53 @@ export default function Account({ session }: { session: Session }) {
   }
 
   return (
-    <div className="form-widget">
-      <Avatar
-        uid={user!.id}
-        url={avatar_url}
-        size={150}
-        onUpload={url => {
-          setAvatarUrl(url);
-          updateProfile({ username, website, avatar_url: url });
-        }}
-      />
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={session.user.email} disabled />
-      </div>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          value={username || ""}
-          onChange={e => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          type="website"
-          value={website || ""}
-          onChange={e => setWebsite(e.target.value)}
-        />
-      </div>
+    <Box bg="gray.50" px="4" py="8">
+      <Text fontSize="2xl" lineHeight="2" display="block">
+        Account
+      </Text>
 
-      <div>
-        <button
-          className="button primary block"
-          onClick={() => updateProfile({ username, website, avatar_url })}
-          disabled={loading}
-        >
-          {loading ? "Loading ..." : "Update"}
-        </button>
-      </div>
+      <Stack spacing="4" my="16">
+        <Avatar
+          uid={user!.id}
+          url={avatar_url}
+          size={150}
+          onUpload={url => {
+            setAvatarUrl(url);
+            updateProfile({ username, website, avatar_url: url });
+          }}
+        />
+        <FormControl>
+          <FormLabel>Email</FormLabel>
+          <Input type="email" value={session.user.email} disabled />
+        </FormControl>
 
-      <div>
-        <button
-          className="button block"
-          onClick={() => supabase.auth.signOut()}
-        >
-          Sign Out
-        </button>
-      </div>
-    </div>
+        <FormControl>
+          <FormLabel>Username</FormLabel>
+          <Input
+            type="text"
+            value={username || ""}
+            onChange={e => setUsername(e.target.value)}
+          />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Website</FormLabel>
+          <Input
+            type="text"
+            value={website || ""}
+            onChange={e => setWebsite(e.target.value)}
+          />
+        </FormControl>
+      </Stack>
+      <Button
+        onClick={() => updateProfile({ username, website, avatar_url })}
+        disabled={loading}
+        colorScheme="green"
+        // display="flex"
+        w="100%"
+      >
+        {loading ? "Loading ..." : "Update"}
+      </Button>
+    </Box>
   );
 }
