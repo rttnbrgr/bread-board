@@ -1,21 +1,12 @@
 import { useState } from "react";
+import { Box, Button, Stack, StackProps } from "@chakra-ui/react";
+import { ItemRow } from "../Item";
 import {
-  Box,
-  BoxProps,
-  Button,
-  Stack,
-  Text,
-  TextProps,
-  StackProps,
-  IconButton,
-  Input,
-  HStack,
-} from "@chakra-ui/react";
-import { IconButton as IconButtonNew } from "../chakra";
-import { PlaceItem, ItemRow } from ".";
-import { Affordance, AffordanceItem } from "../AffordanceItem";
-import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
-import { PlaceRow, PlaceRowNew } from "./PlaceRow";
+  Affordance,
+  AffordanceItemText,
+  AffordanceRow,
+} from "../AffordanceItem";
+import { PlaceRow } from "./PlaceRow";
 
 export type PlaceProps = {
   title: string;
@@ -114,7 +105,7 @@ export const PlaceStack = ({
       borderLeft="2px solid black"
       minW="300px"
     >
-      <PlaceRowNew
+      <PlaceRow
         initialValue={title}
         onEdit={onEditPlace}
         onConfirm={onConfirmPlace}
@@ -124,11 +115,11 @@ export const PlaceStack = ({
       >
         {title}
         {activeAffordance && ` + ${activeAffordance}`}
-      </PlaceRowNew>
+      </PlaceRow>
       {/* Affordances */}
       {data &&
         data.map((item, i) => (
-          <ItemRow
+          <AffordanceRow
             key={i}
             initialValue={item}
             onRemove={removeAffordance}
@@ -138,14 +129,14 @@ export const PlaceStack = ({
               handleEditAffordance(i);
             }}
           >
-            <AffordanceItem>{item}</AffordanceItem>
-          </ItemRow>
+            {item}
+          </AffordanceRow>
         ))}
 
       {/* Add new affordance */}
       <Box p="2">
         {showAffordanceInput ? (
-          <Affordance
+          <AffordanceRow
             isNew
             onAdd={handleAddAffordance}
             onCancel={handleCancelAffordance}

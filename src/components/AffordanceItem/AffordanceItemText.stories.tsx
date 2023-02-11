@@ -1,22 +1,22 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { AffordanceItem } from "./AffordanceItem";
+import { AffordanceItemText } from "./AffordanceItemText";
 
 export default {
   title: "Breadboard/AffordanceItem",
-  component: AffordanceItem
-} as ComponentMeta<typeof AffordanceItem>;
+  component: AffordanceItemText,
+} as ComponentMeta<typeof AffordanceItemText>;
 
 // this is not working for the default value
 const defaultProps = {
   onClick: () => {
     console.log("hey");
   },
-  children: "This is the place"
+  children: "This is the place",
 };
 
-export const AffordanceItemStory: ComponentStory<typeof AffordanceItem> = (
+export const AffordanceItemStory: ComponentStory<typeof AffordanceItemText> = (
   props = defaultProps
-) => <AffordanceItem {...props} {...defaultProps} />;
+) => <AffordanceItemText {...props} {...defaultProps} />;
 
 AffordanceItemStory.storyName = "AffordanceItem";

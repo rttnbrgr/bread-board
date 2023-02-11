@@ -1,2 +1,2 @@
-export * from "./AffordanceItem";
+export * from "./AffordanceItemText";
 export * from "./AffordanceRow";

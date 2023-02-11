@@ -13,7 +13,7 @@ const textStyles: TextProps = {
   fontSize: "sm",
 };
 
-export const AffordanceItem = ({ children, ...boxProps }: BoxProps) => {
+export const AffordanceItemText = ({ children, ...boxProps }: BoxProps) => {
   return (
     <Box {...boxStyles} {...boxProps}>
       <Text {...textStyles}>{children}</Text>
