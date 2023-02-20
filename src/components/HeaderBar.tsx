@@ -12,7 +12,7 @@ const Logo = (props: BoxProps) => {
       lineHeight="2"
       {...props}
     >
-      PATH
+      Breadboard
     </Box>
   );
 };
