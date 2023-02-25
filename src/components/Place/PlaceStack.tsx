@@ -109,7 +109,7 @@ export const PlaceStack = ({
         optIn
       >
         {title}
-        {activeAffordance && ` + ${activeAffordance}`}
+        {/* {activeAffordance && ` + ${activeAffordance}`} */}
       </PlaceRow>
       {/* Affordances */}
       {data &&

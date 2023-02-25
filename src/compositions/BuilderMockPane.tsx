@@ -7,23 +7,27 @@ import {
   AlertTitleProps,
   VStack,
 } from "@chakra-ui/react";
-import { mockPlaceArray } from "../mock";
+import { mockPlaceArray, starterData } from "../mock";
 import { PlaceRow, PlaceStack, PlaceProps } from "../components";
 import { useKeyDebug, useKeyPress, useLocalStorage } from "../hooks";
 
 type PlaceData = Pick<PlaceProps, "title" | "items">;
 
 export const MockPane = () => {
-  const [placesData, setPlacesData] = useLocalStorage<PlaceData[]>(
+  const [placesData, setPlacesData] = useLocalStorage<PlaceData[] | undefined>(
     "placesLocalData",
-    []
+    undefined
   );
 
   // Input
   const [showPlaceInput, setShowPlaceInput] = useState<Boolean>(false);
 
   function loadInitialData(initialData = mockPlaceArray) {
-    setPlacesData(initialData);
+    console.log("loadInitialData");
+    console.log("data", placesData);
+    if (!placesData) {
+      setPlacesData(initialData);
+    }
   }
 
   const handleEditPlace = (i?: number) => {};
@@ -98,6 +102,11 @@ export const MockPane = () => {
     });
   };
 
+  useEffect(() => {
+    console.log("useEffect");
+    loadInitialData(starterData);
+  }, []);
+
   // useKeyDebug();
   const showDebugBox = false;
 
@@ -121,7 +130,7 @@ export const MockPane = () => {
         </Box>
       )}
       {/* Test */}
-      <Stack direction="row" spacing="8">
+      <Stack direction="row" spacing="8" alignItems="flex-start">
         {placesData &&
           placesData.map((place, i) => (
             <PlaceStack

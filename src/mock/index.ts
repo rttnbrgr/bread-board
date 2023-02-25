@@ -31,3 +31,20 @@ export const mockPlaceArray = [
   //   ]
   // }
 ];
+
+export const starterData = [
+  {
+    title: "Comrades",
+    items: [
+      "Dasher",
+      "Dancer",
+      "Prancer",
+      "Vixen",
+      "Comet",
+      "Cupid",
+      "Donner",
+      "Blitzen",
+      "Rudolph",
+    ],
+  },
+];
