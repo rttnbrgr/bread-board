@@ -12,7 +12,7 @@ const Logo = (props: BoxProps) => {
       lineHeight="2"
       {...props}
     >
-      Breadboard
+      bread.board
     </Box>
   );
 };
@@ -23,6 +23,7 @@ const HeaderBarWrapperStyles = {
   // Convert these to theme
   bg: "black",
   color: "white",
+  height: "56px", // #TODO magic number
 };
 
 const HeaderBarContainerStyles = {

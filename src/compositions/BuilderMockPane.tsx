@@ -121,7 +121,7 @@ export const MockPane = () => {
         </Box>
       )}
       {/* Test */}
-      <Stack direction="row" spacing="8">
+      <Stack direction="row" spacing="8" alignItems="flex-start">
         {placesData &&
           placesData.map((place, i) => (
             <PlaceStack

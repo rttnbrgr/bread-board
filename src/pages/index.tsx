@@ -44,10 +44,19 @@ const Home = () => {
         </Container>
       ) : (
         // Logged In
-        <Box>
-          <Container maxW="container.xl" style={{ overflowX: "scroll" }}>
-            <Flex>
-              <Box flex="3 1 200px">
+        <Box h="calc(100vh - 56px)">
+          <Container
+            maxW="container.xl"
+            style={{ overflowX: "auto" }}
+            display="flex"
+            height="100%"
+          >
+            <Flex width="100%">
+              <Box
+                flex="3 1 200px"
+                alignSelf="center"
+                style={{ overflowX: "auto" }}
+              >
                 <PrimaryPane />
               </Box>
               <Box
